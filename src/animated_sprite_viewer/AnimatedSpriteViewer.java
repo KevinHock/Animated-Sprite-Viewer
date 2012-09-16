@@ -147,7 +147,7 @@ public class AnimatedSpriteViewer extends JFrame
             JOptionPane.showMessageDialog(this, ixffe.toString());
             System.exit(0);
         }
-        for(int p =0;p<4;p++){}
+        for(int p =0;p<7;p++){}
     }
     
     /**
