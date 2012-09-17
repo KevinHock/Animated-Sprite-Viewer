@@ -17,6 +17,7 @@ import sprite_renderer.PoseList;//added by me
 import sprite_renderer.SceneRenderer;
 import sprite_renderer.Sprite;
 import sprite_renderer.SpriteType;
+import animated_sprite_viewer.WhitespaceFreeXMLNode;//added by me
 
 /**
  * The AnimatedSpriteViewer application lets one load and view
@@ -147,7 +148,6 @@ public class AnimatedSpriteViewer extends JFrame
             JOptionPane.showMessageDialog(this, ixffe.toString());
             System.exit(0);
         }
-        for(int p =0;p<7;p++){}
     }
     
     /**
@@ -224,8 +224,9 @@ public class AnimatedSpriteViewer extends JFrame
     private void clearAnimationStatesComboBox()
     {
         spriteStateComboBoxModel.removeAllElements();
-        spriteStateComboBoxModel.addElement(SELECT_ANIMATION_TEXT);        
-        spriteStateCombobox.setEnabled(false);      
+        spriteStateComboBoxModel.addElement(SELECT_ANIMATION_TEXT); 
+        spriteStateComboBoxModel.addElement("Arbitrary Stuff"); 
+        spriteStateCombobox.setEnabled(true);      
     }
   
     /**
@@ -308,6 +309,27 @@ public class AnimatedSpriteViewer extends JFrame
      */
     private SpriteType loadSpriteType()
     {
+        /*
+         * 
+         * 
+         * 
+         * 
+         * 
+         * 
+         * 
+         * 
+         * 
+         */
+        WhitespaceFreeXMLNode root = new WhitespaceFreeXMLNode("root");
+        /*
+         * 
+         * 
+         * 
+         * 
+         * 
+         * 
+         * 
+         */
         // WE'LL USE THESE TO INITIALIZE OUR SPRITE TYPE
         String prefix = "round_man";
         String path = "./data/sprite_types/" + prefix + "/";
@@ -320,7 +342,7 @@ public class AnimatedSpriteViewer extends JFrame
         
         // AND HERE'S THE ACTUAL SPRITE TYPE
         SpriteType roundManType = new SpriteType();
-
+        
         // AGAIN, WE ARE WAY OVER-SIMPLIFYING THE INITIALIZATION
         // OF THIS DATA. THIS SHOULD REALLY BE DONE FROM A FILE.
         // HERE WE'RE JUST MAKING A COUPLE OF SIMPLE PoseLists, 
@@ -332,7 +354,7 @@ public class AnimatedSpriteViewer extends JFrame
             
             // CREATE A NEW LIST
             PoseList poseList = roundManType.addPoseList(roundManStates[i]);
-
+            
             // AND ADD THE POSES. THE midPoseID VALUE IS JUST 
             // A SILLY LITTLE MECHANISM TO HARD-CODE FIVE
             // IMAGES TOGETHER INTO A POSE SEQUENCE (PoseList)
@@ -345,7 +367,7 @@ public class AnimatedSpriteViewer extends JFrame
             poseList.addPose(midPoseID-1,    5);
             poseList.addPose(midPoseID-2,   10);
             poseList.addPose(midPoseID-1,    5);
-
+            
             // AND NOW LOAD THE IMAGES
             for (int j = 1; j <= 5; j++)
             {
@@ -354,7 +376,7 @@ public class AnimatedSpriteViewer extends JFrame
                         + roundManStates[i] + "_" + j + ".png";
                 
                 // LOAD THE IMAGE
-                Image img = loadImageInBatch(path, fileName, tracker, idCounter);
+                Image img = loadImageInBatch(path, fileName, tracker, idCounter);//////
                 
                 // GIVE IT TO THE SPRITE TYPE
                 roundManType.addImage(idCounter, img);
