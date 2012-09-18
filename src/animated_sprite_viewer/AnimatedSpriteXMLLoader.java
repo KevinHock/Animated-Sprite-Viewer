@@ -116,9 +116,7 @@ public class AnimatedSpriteXMLLoader
             String sheep = gotRoot.get(qq).getData();
             spriteTypeNames.add(sheep);
         }
-        
-        
-        
+
         /*String ddsdsdsds = "whereZZZZZ";
         Iterator<WhitespaceFreeXMLNode> spriteTypesIterator = spriteTypeListNode.getChildren();//Iterator of sprite_type 
         while(spriteTypesIterator.hasNext())
@@ -127,10 +125,61 @@ public class AnimatedSpriteXMLLoader
             String spriteTypeName = spriteTypeNode.getData();//get data of sprite type
             spriteTypeNames.add(spriteTypeName);
         }*/            
+    }
+    
+    /**
+     * This method extracts the animation states of all sprite types from the provided
+     * xml file argument and loads these names into the spriteTypeNames
+     * list.
+     * 
+     * @param path Path to where the sprite types home directory. Note that
+     * each sprite would have its own directory inside this directory.
+     * 
+     * @param spriteTypesXMLFile File name for the xml file with a list of
+     * all the sprite types.
+     * 
+     * @param animationStates List where we'll put all the sprite type
+     * names we find.
+     * 
+     * @throws InvalidXMLFileFormatException Thrown if we encounter an xml
+     * file that does not validate against its schema.
+     */
+    public static void loadSpriteAnimationStates(    String path,
+                                        String spriteTypesXMLFile,
+                                        ArrayList<String> animationStates)
+            throws InvalidXMLFileFormatException
+    {
+        // FIRST LET'S BUILD THE NAME OF THE XML FILE
+        String xmlFile = (path + spriteTypesXMLFile).trim();
         
+        // NOW LET'S BUILD THE NAME OF THE SCHEMA
+        String xsdFile = xmlFile.substring(0, xmlFile.length()-4) + ".xsd";
         
+        // IS THE XML VALID PER THE SCHEMA?
+        WhitespaceFreeXMLDoc cleanDoc = loadXMLDocument(xmlFile, xsdFile);
         
+        // IF THERE'S A PROBLEM LOADING THE XML FILE THEN
+        // SKIP THIS SPRITE TYPE
+        if (cleanDoc == null)
+        {
+            throw new InvalidXMLFileFormatException(xmlFile, xsdFile);
+        }
         
+        // IT'S A VALID XML FILE SO LET'S GET THE DATA
+        WhitespaceFreeXMLNode root = cleanDoc.getRoot();//clean doc and get node sprite_type_list
+        //spriteTypeListNode.getChildrenOfType("sprite_type");
+        ArrayList<WhitespaceFreeXMLNode> animationsList = root.getChildrenOfType("animations_list");
+        WhitespaceFreeXMLNode statesParent = animationsList.get(0);
+        ArrayList<WhitespaceFreeXMLNode> states = statesParent.getChildrenOfType("animation_state");
+        for(int qq=0;qq<states.size();qq++){
+            animationStates.add(states.get(qq).getData());
+        }
+        /*
+        for(int qq=0;qq<gotRoot.size();qq++){
+            String sheep = gotRoot.get(qq).getData();
+            animationStates.add(sheep);
+        }
+        */
     }
     
     /**
