@@ -144,7 +144,7 @@ public class AnimatedSpriteViewer extends JFrame
             
             // FIRST UP IS THE SPRITE TYPES LIST
             xmlLoader.loadSpriteTypeNames(SPRITES_DATA_PATH,
-                             SPRITE_TYPE_LIST_FILE, spriteTypeNames);           
+                             SPRITE_TYPE_LIST_FILE, spriteTypeNames);//("./data/sprite_types/","sprite_type_list.xml",/*empty*/ ArrayList)     
         }
         catch(InvalidXMLFileFormatException ixffe)
         {
@@ -175,7 +175,7 @@ public class AnimatedSpriteViewer extends JFrame
         }
         //spriteTypesListModel.addElement("HAHAHAHAHAHAH");
         spriteTypesList = new JList();//sprite type list handler
-        
+        //pass animatedsprite viewer then call this
         //put listener on the Jlist
         
         
@@ -188,7 +188,7 @@ public class AnimatedSpriteViewer extends JFrame
         spriteStateCombobox = new JComboBox();
         spriteStateCombobox.setModel(spriteStateComboBoxModel);
         clearAnimationStatesComboBox();
-
+        
         // NOW LET'S ARRANGE ALL OUR CONTROLS IN THE WEST
         westOfSouthPanel = new JPanel();
         westOfSouthPanel.setLayout(new BorderLayout());
@@ -199,7 +199,7 @@ public class AnimatedSpriteViewer extends JFrame
         Border etchedBorder = BorderFactory.createEtchedBorder();
         Border titledBorder = BorderFactory.createTitledBorder(etchedBorder, "Sprite Type Selection");
         westOfSouthPanel.setBorder(titledBorder);       
-
+        
         // NOW THE STUFF FOR THE SOUTH
         animationToolbar = new JPanel();         
         MediaTracker mt = new MediaTracker(this);
@@ -239,20 +239,23 @@ public class AnimatedSpriteViewer extends JFrame
         spriteStateComboBoxModel.removeAllElements();
         spriteStateComboBoxModel.addElement(SELECT_ANIMATION_TEXT); 
         spriteStateComboBoxModel.addElement("Arbitrary Stuff"); 
-        //get all dem animation states
+        //get all animation states
         
         spriteAnimationStates = new ArrayList<String>();
         ///
-        /*
+        
         try
         {
             // THIS WILL LOAD AND VALIDATE
             // OUR XML FILES
             xmlLoader = new AnimatedSpriteXMLLoader(this);
             
+            
+            
+            
             // FIRST UP IS THE SPRITE TYPES LIST
-            xmlLoader.loadSpriteAnimationStates(SPRITES_DATA_PATH,
-                             "round_man.xml", spriteAnimationStates);           
+            xmlLoader.loadSpriteAnimationStates("./data/sprite_types/box_man/",//FORGOT THE FUCKIN UNDERSCORE
+                             "box_man.xml", spriteAnimationStates);           
         }
         catch(InvalidXMLFileFormatException ixffe)
         {
@@ -263,7 +266,7 @@ public class AnimatedSpriteViewer extends JFrame
             JOptionPane.showMessageDialog(this, ixffe.toString());
             System.exit(0);
         }
-        */
+        
         
         ///
         
