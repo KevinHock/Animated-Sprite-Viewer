@@ -18,6 +18,8 @@ import sprite_renderer.SceneRenderer;
 import sprite_renderer.Sprite;
 import sprite_renderer.SpriteType;
 import animated_sprite_viewer.WhitespaceFreeXMLNode;//added by me
+import org.w3c.dom.Document;
+import animated_sprite_viewer.AnimatedSpriteXMLLoader;
 
 /**
  * The AnimatedSpriteViewer application lets one load and view
@@ -59,7 +61,12 @@ public class AnimatedSpriteViewer extends JFrame
     // WE'LL LOAD ALL THE SPRITE TYPES INTO LIST
     // FROM AN XML FILE
     private ArrayList<String> spriteTypeNames;
-
+    
+    //WE'LL LOAD ALL THE SPRITE TYPES INTO LIST
+    //FROM AN XML FILE
+    
+    private ArrayList<String> spriteAnimationStates;
+    
     // THIS WILL DO OUR XML FILE LOADING FOR US
     private AnimatedSpriteXMLLoader xmlLoader;
 
@@ -126,7 +133,7 @@ public class AnimatedSpriteViewer extends JFrame
         // WE'LL PUT ALL THE SPRITE TYPES HERE
         spriteTypeNames = new ArrayList<String>();
         
-        loadSprite();
+        //loadSprite();
         
         // LOAD THE SPRITE TYPES FROM THE XML FILE
         try
@@ -166,10 +173,16 @@ public class AnimatedSpriteViewer extends JFrame
             String spriteTypeName = spriteTypeNamesIt.next();
             spriteTypesListModel.addElement(spriteTypeName);
         }
-        spriteTypesList = new JList();
+        //spriteTypesListModel.addElement("HAHAHAHAHAHAH");
+        spriteTypesList = new JList();//sprite type list handler
+        
+        //put listener on the Jlist
+        
+        
+        
         spriteTypesList.setModel(spriteTypesListModel);
         spriteTypesListJSP = new JScrollPane(spriteTypesList);
-              
+        
         // OUR COMBO BOX STARTS OUT EMPTY
         spriteStateComboBoxModel = new DefaultComboBoxModel();        
         spriteStateCombobox = new JComboBox();
@@ -226,6 +239,35 @@ public class AnimatedSpriteViewer extends JFrame
         spriteStateComboBoxModel.removeAllElements();
         spriteStateComboBoxModel.addElement(SELECT_ANIMATION_TEXT); 
         spriteStateComboBoxModel.addElement("Arbitrary Stuff"); 
+        //get all dem animation states
+        
+        spriteAnimationStates = new ArrayList<String>();
+        ///
+        /*
+        try
+        {
+            // THIS WILL LOAD AND VALIDATE
+            // OUR XML FILES
+            xmlLoader = new AnimatedSpriteXMLLoader(this);
+            
+            // FIRST UP IS THE SPRITE TYPES LIST
+            xmlLoader.loadSpriteAnimationStates(SPRITES_DATA_PATH,
+                             "round_man.xml", spriteAnimationStates);           
+        }
+        catch(InvalidXMLFileFormatException ixffe)
+        {
+            // IF WE DON'T HAVE A VALID SPRITE TYPE 
+            // LIST WE HAVE NOTHING TO DO, WE'LL POP
+            // OPEN A DIALOG BOX SO THE USER KNOWS
+            // WHAT HAPPENED
+            JOptionPane.showMessageDialog(this, ixffe.toString());
+            System.exit(0);
+        }
+        */
+        
+        ///
+        
+        ///
         spriteStateCombobox.setEnabled(true);      
     }
   
@@ -319,8 +361,21 @@ public class AnimatedSpriteViewer extends JFrame
          * 
          * 
          * 
-         */
+         *
         WhitespaceFreeXMLNode root = new WhitespaceFreeXMLNode("root");
+        Document spriteTypes = data/sprite_types/sprite_type_list.xml;
+        WhitespaceFreeXMLDoc.loadDoc("data/sprite_types/sprite_type_list.xml");
+        * */
+        
+        /*
+        ArrayList bing = new ArrayList();
+        try{
+            AnimatedSpriteXMLLoader.loadSpriteTypeNames("data/sprite_types/","sprite_type_list.xml",bing);
+        }
+        catch(Exception e){
+            
+        }
+        */
         /*
          * 
          * 
