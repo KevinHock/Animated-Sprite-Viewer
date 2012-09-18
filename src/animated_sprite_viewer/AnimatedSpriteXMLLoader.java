@@ -157,7 +157,7 @@ public class AnimatedSpriteXMLLoader
         
         // IS THE XML VALID PER THE SCHEMA?
         WhitespaceFreeXMLDoc cleanDoc = loadXMLDocument(xmlFile, xsdFile);
-        
+        int p =5;
         // IF THERE'S A PROBLEM LOADING THE XML FILE THEN
         // SKIP THIS SPRITE TYPE
         if (cleanDoc == null)
