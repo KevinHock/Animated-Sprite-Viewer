@@ -153,7 +153,7 @@ public class AnimatedSpriteXMLLoader
         String xmlFile = (path + spriteTypesXMLFile).trim();
         
         // NOW LET'S BUILD THE NAME OF THE SCHEMA
-        String xsdFile = xmlFile.substring(0, xmlFile.length()-4) + ".xsd";
+        String xsdFile = "./data/sprite_types/sprite_type.xsd";
         
         // IS THE XML VALID PER THE SCHEMA?
         WhitespaceFreeXMLDoc cleanDoc = loadXMLDocument(xmlFile, xsdFile);
@@ -169,10 +169,69 @@ public class AnimatedSpriteXMLLoader
         WhitespaceFreeXMLNode root = cleanDoc.getRoot();//clean doc and get node sprite_type_list
         //spriteTypeListNode.getChildrenOfType("sprite_type");
         ArrayList<WhitespaceFreeXMLNode> animationsList = root.getChildrenOfType("animations_list");
-        WhitespaceFreeXMLNode statesParent = animationsList.get(0);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        /*
+         * Make two arrayList, one original array list and one that gets reinitialized to each child list.
+         */
+        
+        ArrayList<WhitespaceFreeXMLNode> oal = animationsList;
+        ArrayList<WhitespaceFreeXMLNode> reinitialized;
+        ArrayList<WhitespaceFreeXMLNode> reinitializedNested;
+        String q;
+        for(int i=0;i<oal.size();i++){
+            reinitialized = animationsList.get(i).getChildrenOfType("animation_state");
+            for(int ss=0;ss<reinitialized.size();ss++){
+                reinitializedNested = reinitialized.get(ss).getChildrenOfType("state");
+                for(int fodor=0;fodor<reinitializedNested.size();fodor++){
+                    q = reinitializedNested.get(fodor).getData();
+                }
+            }
+        }
+        
+        ////////
+        ////////
+        ////////
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //
+        ArrayList<WhitespaceFreeXMLNode> blah = animationsList.get(0).getChildrenOfType("animations_list");
+        WhitespaceFreeXMLNode statesParent = animationsList.get(0);//dont assume 1 animationslist
         ArrayList<WhitespaceFreeXMLNode> states = statesParent.getChildrenOfType("animation_state");
+        String ghi = states.get(0).getData();//should be states.getChildrenOfType"state" then
+        ArrayList<WhitespaceFreeXMLNode> asm = states.get(0).getChildrenOfType("state");
+        //ArrayList<WhitespaceFreeXMLNode> lalaalal;
+        //ArrayList<WhitespaceFreeXMLNode> ghi;
         for(int qq=0;qq<states.size();qq++){
-            animationStates.add(states.get(qq).getData());
+            //lalaalal.add(states.get(qq).getChildrenOfType("state"));
+            //asm = states.get(qq).getChildrenOfType("state");//maybe make an array based on the size of each 
+        }
+        for(int wong=0;wong<10;wong++){
         }
         /*
         for(int qq=0;qq<gotRoot.size();qq++){
@@ -269,7 +328,7 @@ public class AnimatedSpriteXMLLoader
             // 2. Compile the schema. 
             // Here the schema is loaded from a java.io.File, but you could use 
             // a java.net.URL or a javax.xml.transform.Source instead.
-            File schemaLocation = new File(xmlSchemaNameAndPath);
+            File schemaLocation = new File(xmlSchemaNameAndPath);//950 for sprite_type_list
             Schema schema = factory.newSchema(schemaLocation);
             
             // 3. Get a validator from the schema.
@@ -279,7 +338,7 @@ public class AnimatedSpriteXMLLoader
             Source source = new StreamSource(xmlDocNameAndPath);
             
             // 5. Check the document
-            validator.validate(source);
+            validator.validate(source);//1148 = stream for source and  2144 for fuckup
             return true;
         }
         catch (Exception e) 
