@@ -164,7 +164,6 @@ public class AnimatedSpriteViewer extends JFrame
     }
     public static void setFrid(int p){
         frid =p;
-        
     }
     /**
      * This initializes all the GUI components and places
@@ -194,7 +193,7 @@ public class AnimatedSpriteViewer extends JFrame
                 System.out.println("Clicked on Item " + index);
                 AnimatedSpriteViewer.setFrid(index);
                 frid = index;
-                clearAnimationStatesComboBox();
+                clearAnimationStatesComboBox(true);
             }
             }
         };
@@ -208,7 +207,8 @@ public class AnimatedSpriteViewer extends JFrame
         spriteStateComboBoxModel = new DefaultComboBoxModel();        
         spriteStateCombobox = new JComboBox();
         spriteStateCombobox.setModel(spriteStateComboBoxModel);
-        clearAnimationStatesComboBox();
+        clearAnimationStatesComboBox(false);
+        
         
         // NOW LET'S ARRANGE ALL OUR CONTROLS IN THE WEST
         westOfSouthPanel = new JPanel();
@@ -218,7 +218,7 @@ public class AnimatedSpriteViewer extends JFrame
         
         // AND LET'S PUT A TITLED BORDER AROUND THE WEST OF THE SOUTH
         Border etchedBorder = BorderFactory.createEtchedBorder();
-        Border titledBorder = BorderFactory.createTitledBorder(etchedBorder, "Sprite Type Selection");
+        Border titledBorder = BorderFactory.createTitledBorder(etchedBorder, "Sprite Type");
         westOfSouthPanel.setBorder(titledBorder);       
         
         // NOW THE STUFF FOR THE SOUTH
@@ -255,14 +255,14 @@ public class AnimatedSpriteViewer extends JFrame
      * This helper method empties the combo box with animations
      * and disables the component.
      */
-    public void clearAnimationStatesComboBox()
+    public void clearAnimationStatesComboBox(boolean fromMouse)
     {
         spriteStateComboBoxModel.removeAllElements();
-       //if(frid==-1){
+        if(!fromMouse){
         spriteStateComboBoxModel.addElement(SELECT_ANIMATION_TEXT); 
         //get all animation states
-        //}
-       // else{
+        }
+        else{
         spriteAnimationStates = new ArrayList<String>();
         ///
           String man = spriteTypeNames.get(frid);
@@ -278,7 +278,7 @@ public class AnimatedSpriteViewer extends JFrame
             // OUR XML FILES
             xmlLoader = new AnimatedSpriteXMLLoader(this);
             // FIRST UP IS THE SPRITE TYPES LIST
-            xmlLoader.loadSpriteAnimationStates(mons,//FORGOT THE FUCKIN UNDERSCORE
+            xmlLoader.loadSpriteAnimationStates(mons,//FORGOT THE UNDERSCORE
                              frontc, spriteAnimationStates);           
         }
         catch(InvalidXMLFileFormatException ixffe)
@@ -294,8 +294,8 @@ public class AnimatedSpriteViewer extends JFrame
             spriteStateComboBoxModel.addElement(spriteAnimationStates.get(ntfsINDX));
         }
         ///
-        //}
-        ///
+        }
+        //
         spriteStateCombobox.setEnabled(true);      
     }
   
