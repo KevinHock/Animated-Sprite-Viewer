@@ -1,5 +1,6 @@
 package animated_sprite_viewer;
 
+import animated_sprite_viewer.events.slowDownAnimationHandler;
 import animated_sprite_viewer.events.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,6 +21,8 @@ import sprite_renderer.SpriteType;
 import animated_sprite_viewer.WhitespaceFreeXMLNode;//added by me
 import org.w3c.dom.Document;
 import animated_sprite_viewer.AnimatedSpriteXMLLoader;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -140,7 +143,6 @@ public class AnimatedSpriteViewer extends JFrame
         // WE'LL PUT ALL THE SPRITE TYPES HERE
         spriteTypeNames = new ArrayList<String>();
         
-        loadSprite();
         
         // LOAD THE SPRITE TYPES FROM THE XML FILE
         try
@@ -189,13 +191,13 @@ public class AnimatedSpriteViewer extends JFrame
         
          MouseListener mouseListener = new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-            if (e.getClickCount() == 1) {
-                int index = spriteTypesList.locationToIndex(e.getPoint());
-                System.out.println("Clicked on Item " + index);
-                AnimatedSpriteViewer.setFrid(index);
-                frid = index;
-                clearAnimationStatesComboBox(true);
-            }
+                if (e.getClickCount() == 1) {
+                    int index = spriteTypesList.locationToIndex(e.getPoint());
+                    System.out.println("Clicked on Item " + index);
+                    AnimatedSpriteViewer.setFrid(index);
+                    frid = index;
+                    clearAnimationStatesComboBox(true);
+                }
             }
         };
         spriteTypesList.addMouseListener(mouseListener);
@@ -246,6 +248,7 @@ public class AnimatedSpriteViewer extends JFrame
         sceneRenderingPanel = new SceneRenderer(spriteList);
         sceneRenderingPanel.setBackground(Color.white);
         sceneRenderingPanel.startScene();
+        //sceneRenderingPanel.unpauseScene();
         
         // AND LET'S ARRANGE EVERYTHING IN THE FRAME
         add(sceneRenderingPanel, BorderLayout.CENTER);
@@ -259,8 +262,9 @@ public class AnimatedSpriteViewer extends JFrame
     public void clearAnimationStatesComboBox(boolean fromMouse)
     {
         spriteStateComboBoxModel.removeAllElements();
-        if(!fromMouse){
         spriteStateComboBoxModel.addElement(SELECT_ANIMATION_TEXT); 
+        if(!fromMouse){
+        //spriteStateComboBoxModel.addElement(SELECT_ANIMATION_TEXT); 
         //get all animation states
         }
         else{
@@ -292,11 +296,77 @@ public class AnimatedSpriteViewer extends JFrame
                 spriteStateComboBoxModel.addElement(spriteAnimationStates.get(ntfsINDX));
             }
             ///
+            class MyActionListener implements ActionListener {
+                //duh states in actionPerformed are hard coded buuut it should loop through spriteAnimationStates and see if it matches
+                //duh states in loadSpriteType are hard coded so it should be passed an array of animationStates
+                /*
+                ffff
+                for(int dowd=0;dowd<spriteAnimationStates.size();dowd++){
+                    if(item.equals(spriteAnimationStates.get(dowd))){
+                         loadSprite((String)item,man,mons);
+                     }
+                    
+                }  
+                  
+                  if(item!=null){
+                    for(int dowd=0;dowd<spriteAnimationStates.size();dowd++){
+                        if(item.equals(spriteAnimationStates.get(dowd))){
+                             loadSprite((String)item,man,mons);
+                        }
+                    }
+                  }
+                  
+                  
+                */
+                
+                
+                public void actionPerformed(ActionEvent evt) {
+                  
+                  JComboBox cb = (JComboBox)evt.getSource();
+                  Object item = cb.getSelectedItem();
+                  if(item!=null){
+                    //boolean unitializedDefaultToZeroeth = true;
+                    for(int dowd=0;dowd<spriteAnimationStates.size();dowd++){
+                        if(item.equals(spriteAnimationStates.get(dowd))){
+                             //sceneRenderingPanel.startScene();
+                             loadSprite((String)item,man,mons);
+                             //unitializedDefaultToZeroeth =false;
+                        }
+                    }
+                    
+                    
+                    //if(unitializedDefaultToZeroeth){
+                    //loadSprite(spriteAnimationStates.get(0),man,mons);
+                    //}
+                    
+                    
+                    /*
+                    if(item.equals("BOUNCING")){
+                        //man = round_man = prefix
+                        //mons = ./data/sprite_types/round_man/ = path
+                        //System.out.println(spriteAnimationStates.get(0));
+                        
+                        System.out.println("IMMA B BOUNCING");
+                        loadSprite((String)item,man,mons);
+                    }
+                    if(item.equals("IDLE")){
+                        System.out.println("IMMA B IDLE");
+                        loadSprite((String)item,man,mons);
+                    }
+                    //at end assume 0 of animationstates
+                    */
+                 }
+                }
+            }
+            ///reeeeeeel sloppy Listeners
+            MyActionListener actionListener = new MyActionListener();
+            spriteStateCombobox.addActionListener(actionListener);
         }
         //
-        spriteStateCombobox.setEnabled(true);      
+        spriteStateCombobox.setEnabled(true);
+        
     }
-  
+    
     /**
      * This is a helper method for making a button. It loads the image and sets
      * it as the button image. It then puts it in the panel.
@@ -341,26 +411,58 @@ public class AnimatedSpriteViewer extends JFrame
         // CONSTRUCT AND REGISTER ALL THE HANDLERS
         StartAnimationHandler sah = new StartAnimationHandler(sceneRenderingPanel);
         startButton.addActionListener(sah);
-        stopButton.addActionListener(sah);
-        slowDownButton.addActionListener(sah);
-        speedUpButton.addActionListener(sah);
+        StopAnimationHandler stopah = new StopAnimationHandler(sceneRenderingPanel);
+        stopButton.addActionListener(stopah);//???
+        slowDownAnimationHandler slowah = new slowDownAnimationHandler(sceneRenderingPanel);
+        slowDownButton.addActionListener(slowah);
+        speedUpAnimationHandler speedah = new speedUpAnimationHandler(sceneRenderingPanel);
+        speedUpButton.addActionListener(speedah);
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * This helper method loads our player, including its art and poses
      * and then initializing the player sprite and then adding it to
      * the scene.
      */
-    private void loadSprite()
+    private void loadSprite(String state,String type_man, String pathOfMan)
     {
-        SpriteType duhSprite = loadSpriteType();
+        SpriteType duhSprite = loadSpriteType(type_man,pathOfMan);
+        
+        AnimationState cool = AnimationState.valueOf(state);
         
         // NOW LET'S INIT OUR PLAYER SPRITE
-        Sprite player = new Sprite(duhSprite, AnimationState.IDLE);
+        Sprite player = new Sprite(duhSprite, cool);
         player.setPositionX(250);
         player.setPositionY(250);
         player.setVelocityX(0);
         player.setVelocityY(0);
-        
+        spriteList.clear();//yeahhh
         // AND PUT THE PLAYER IN THE SCENE
         spriteList.add(player);
     }
@@ -375,55 +477,26 @@ public class AnimatedSpriteViewer extends JFrame
      * still no difference to explain the fuckup
      * 
      */
-    private SpriteType loadSpriteType()
+   private SpriteType loadSpriteType(String type_man, String pathOfMan)
     {
-        /*
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         *
-        WhitespaceFreeXMLNode root = new WhitespaceFreeXMLNode("root");
-        Document spriteTypes = data/sprite_types/sprite_type_list.xml;
-        WhitespaceFreeXMLDoc.loadDoc("data/sprite_types/sprite_type_list.xml");
-        * */
+        //this is just loading it so im unsure as to what to do with the states but i'll load them all the then specify in loadSprite the state I want
         
-        /*
-        ArrayList bing = new ArrayList();
-        try{
-            AnimatedSpriteXMLLoader.loadSpriteTypeNames("data/sprite_types/","sprite_type_list.xml",bing);
-        }
-        catch(Exception e){
-            
-        }
-        */
-        /*
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         */
+        
         // WE'LL USE THESE TO INITIALIZE OUR SPRITE TYPE
-        String prefix = "round_man";
-        //String path = "./data/sprite_types/" + prefix + "/";
+        String prefix = type_man;//"round_man";
+        String path = pathOfMan; //"./data/sprite_types/" + prefix + "/";
         int idCounter = 1;
-        AnimationState[] roundManStates = { AnimationState.IDLE,
-                                            AnimationState.BOUNCING};                               
+        //AnimationState[] roundManStates = { AnimationState.IDLE,
+                                           // AnimationState.BOUNCING};                               
+        
         ArrayList<AnimationState> g = new ArrayList<AnimationState>();
-        AnimationState cool;
-        //cool = "AnimationState."+spriteAnimationStates.get(0));
-        //for(int endura=0;endura<spriteAnimationStates.size();endura++){
-        //cool = "AnimationState."+spriteAnimationStates.get(i));
-        //g.add("AnimationState."+spriteAnimationStates.get(i));
-        //}
+        //g.add(AnimationState.valueOf("IDLE"));
+        //g.add(AnimationState.valueOf("BOUNCING"));
+        //System.out.println("see if dat worx");//dat fuckin workd
+
+        for(int endura=0;endura<spriteAnimationStates.size();endura++){
+            g.add(AnimationState.valueOf(spriteAnimationStates.get(endura)));
+        }
         // WE NEED THE TRACKER TO ENSURE FULL IMAGE LOADING
         MediaTracker tracker = new MediaTracker(this);
         
@@ -434,13 +507,13 @@ public class AnimatedSpriteViewer extends JFrame
         // OF THIS DATA. THIS SHOULD REALLY BE DONE FROM A FILE.
         // HERE WE'RE JUST MAKING A COUPLE OF SIMPLE PoseLists, 
         // ONE FOR EACH STATE
-        for (int i = 0; i < roundManStates.length; i++)
+        for (int i = 0; i < g.size(); i++)//for (int i = 0; i < roundManStates.length; i++)
         {
             // NOTICE THAT WE HAVE HARD-CODED THE POSES,
             // i.e. THE IMAGE ID/DURATION NUMBERS BELOW
             
             // CREATE A NEW LIST
-            PoseList poseList = man.addPoseList(roundManStates[i]);
+            PoseList poseList = man.addPoseList(g.get(i));
             
             // AND ADD THE POSES. THE midPoseID VALUE IS JUST 
             // A SILLY LITTLE MECHANISM TO HARD-CODE FIVE
@@ -459,11 +532,11 @@ public class AnimatedSpriteViewer extends JFrame
             for (int j = 1; j <= 5; j++)
             {
                 // THE IAMGE NAMES ARE PREDICABLE
-                String fileName = man + "_"
-                        + roundManStates[i] + "_" + j + ".png";
+                String fileName = prefix + "_"//replaced man with prefix
+                        + g.get(i) + "_" + j + ".png";
                 
                 // LOAD THE IMAGE
-                Image img = loadImageInBatch(mons, fileName, tracker, idCounter);//////
+                Image img = loadImageInBatch(path, fileName, tracker, idCounter);//////was mons in 1st para
                 
                 // GIVE IT TO THE SPRITE TYPE
                 man.addImage(idCounter, img);
@@ -489,7 +562,7 @@ public class AnimatedSpriteViewer extends JFrame
         }
         
         // RETURN OUR NEWLY CONSTRUCTED SPRITE TYPE FOR USE
-        return man;
+        return man; 
     }
         /**
      * This method is used to load an individual image among many
@@ -528,6 +601,8 @@ public class AnimatedSpriteViewer extends JFrame
     {
         // START IT UP
         AnimatedSpriteViewer appWindow = new AnimatedSpriteViewer();
+        
         appWindow.setVisible(true);
+        System.out.println("fff");
     }
 }
