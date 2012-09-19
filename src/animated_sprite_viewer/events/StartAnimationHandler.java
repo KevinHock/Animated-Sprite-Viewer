@@ -27,7 +27,7 @@ public class StartAnimationHandler implements ActionListener
     {
         // KEEP THIS FOR LATER
         renderer = initRenderer;
-        //if it was slow down...
+        //if it was slow down button then slow down...
     }    
 
     /**
