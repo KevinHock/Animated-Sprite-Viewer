@@ -97,6 +97,7 @@ public class AnimatedSpriteViewer extends JFrame
     
     
     public static int frid = 0;
+    private String mons,man;
     
     /**
      * The entire application will be initialized from here, including
@@ -139,7 +140,7 @@ public class AnimatedSpriteViewer extends JFrame
         // WE'LL PUT ALL THE SPRITE TYPES HERE
         spriteTypeNames = new ArrayList<String>();
         
-        //loadSprite();
+        loadSprite();
         
         // LOAD THE SPRITE TYPES FROM THE XML FILE
         try
@@ -263,37 +264,34 @@ public class AnimatedSpriteViewer extends JFrame
         //get all animation states
         }
         else{
-        spriteAnimationStates = new ArrayList<String>();
-        ///
-          String man = spriteTypeNames.get(frid);
-          String mons = "./data/sprite_types/";
-          mons += man;
-          mons += "/";
-          String frontc = man;
-          frontc += ".xml";
+            spriteAnimationStates = new ArrayList<String>();
+            ///
+             man = spriteTypeNames.get(frid);
+             mons = "./data/sprite_types/";
+             mons += man;
+             mons += "/";
+             String frontc = man;
+             frontc += ".xml";
         
-        try
-        {
-            // THIS WILL LOAD AND VALIDATE
-            // OUR XML FILES
-            xmlLoader = new AnimatedSpriteXMLLoader(this);
-            // FIRST UP IS THE SPRITE TYPES LIST
-            xmlLoader.loadSpriteAnimationStates(mons,//FORGOT THE UNDERSCORE
-                             frontc, spriteAnimationStates);           
-        }
-        catch(InvalidXMLFileFormatException ixffe)
-        {
-            // IF WE DON'T HAVE A VALID SPRITE TYPE 
-            // LIST WE HAVE NOTHING TO DO, WE'LL POP
-            // OPEN A DIALOG BOX SO THE USER KNOWS
-            // WHAT HAPPENED
-            JOptionPane.showMessageDialog(this, ixffe.toString());
-            System.exit(0);
-        }
-        for(int ntfsINDX=0;ntfsINDX<spriteAnimationStates.size();ntfsINDX++){
-            spriteStateComboBoxModel.addElement(spriteAnimationStates.get(ntfsINDX));
-        }
-        ///
+             try{
+                // THIS WILL LOAD AND VALIDATE
+                // OUR XML FILES
+                xmlLoader = new AnimatedSpriteXMLLoader(this);
+                // FIRST UP IS THE SPRITE TYPES LIST
+                xmlLoader.loadSpriteAnimationStates(mons, frontc, spriteAnimationStates);           
+            }
+            catch(InvalidXMLFileFormatException ixffe){
+                // IF WE DON'T HAVE A VALID SPRITE TYPE 
+                // LIST WE HAVE NOTHING TO DO, WE'LL POP
+                // OPEN A DIALOG BOX SO THE USER KNOWS
+                // WHAT HAPPENED
+                JOptionPane.showMessageDialog(this, ixffe.toString());
+                System.exit(0);
+            }
+            for(int ntfsINDX=0;ntfsINDX<spriteAnimationStates.size();ntfsINDX++){
+                spriteStateComboBoxModel.addElement(spriteAnimationStates.get(ntfsINDX));
+            }
+            ///
         }
         //
         spriteStateCombobox.setEnabled(true);      
@@ -415,16 +413,22 @@ public class AnimatedSpriteViewer extends JFrame
          */
         // WE'LL USE THESE TO INITIALIZE OUR SPRITE TYPE
         String prefix = "round_man";
-        String path = "./data/sprite_types/" + prefix + "/";
+        //String path = "./data/sprite_types/" + prefix + "/";
         int idCounter = 1;
         AnimationState[] roundManStates = { AnimationState.IDLE,
                                             AnimationState.BOUNCING};                               
-        
+        ArrayList<AnimationState> g = new ArrayList<AnimationState>();
+        AnimationState cool;
+        //cool = "AnimationState."+spriteAnimationStates.get(0));
+        //for(int endura=0;endura<spriteAnimationStates.size();endura++){
+        //cool = "AnimationState."+spriteAnimationStates.get(i));
+        //g.add("AnimationState."+spriteAnimationStates.get(i));
+        //}
         // WE NEED THE TRACKER TO ENSURE FULL IMAGE LOADING
         MediaTracker tracker = new MediaTracker(this);
         
         // AND HERE'S THE ACTUAL SPRITE TYPE
-        SpriteType roundManType = new SpriteType();
+        SpriteType man = new SpriteType();
         
         // AGAIN, WE ARE WAY OVER-SIMPLIFYING THE INITIALIZATION
         // OF THIS DATA. THIS SHOULD REALLY BE DONE FROM A FILE.
@@ -436,7 +440,7 @@ public class AnimatedSpriteViewer extends JFrame
             // i.e. THE IMAGE ID/DURATION NUMBERS BELOW
             
             // CREATE A NEW LIST
-            PoseList poseList = roundManType.addPoseList(roundManStates[i]);
+            PoseList poseList = man.addPoseList(roundManStates[i]);
             
             // AND ADD THE POSES. THE midPoseID VALUE IS JUST 
             // A SILLY LITTLE MECHANISM TO HARD-CODE FIVE
@@ -455,14 +459,14 @@ public class AnimatedSpriteViewer extends JFrame
             for (int j = 1; j <= 5; j++)
             {
                 // THE IAMGE NAMES ARE PREDICABLE
-                String fileName = prefix + "_"
+                String fileName = man + "_"
                         + roundManStates[i] + "_" + j + ".png";
                 
                 // LOAD THE IMAGE
-                Image img = loadImageInBatch(path, fileName, tracker, idCounter);//////
+                Image img = loadImageInBatch(mons, fileName, tracker, idCounter);//////
                 
                 // GIVE IT TO THE SPRITE TYPE
-                roundManType.addImage(idCounter, img);
+                man.addImage(idCounter, img);
                 idCounter++;////////
             }
         }
@@ -485,7 +489,7 @@ public class AnimatedSpriteViewer extends JFrame
         }
         
         // RETURN OUR NEWLY CONSTRUCTED SPRITE TYPE FOR USE
-        return roundManType;
+        return man;
     }
         /**
      * This method is used to load an individual image among many
