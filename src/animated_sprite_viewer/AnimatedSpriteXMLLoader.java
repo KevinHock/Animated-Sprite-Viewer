@@ -196,7 +196,7 @@ public class AnimatedSpriteXMLLoader
             for(int ss=0;ss<reinitialized.size();ss++){
                 reinitializedNested = reinitialized.get(ss).getChildrenOfType("state");
                 for(int fodor=0;fodor<reinitializedNested.size();fodor++){
-                    q = reinitializedNested.get(fodor).getData();
+                    animationStates.add(reinitializedNested.get(fodor).getData());
                 }
             }
         }
