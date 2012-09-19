@@ -20,6 +20,9 @@ import sprite_renderer.SpriteType;
 import animated_sprite_viewer.WhitespaceFreeXMLNode;//added by me
 import org.w3c.dom.Document;
 import animated_sprite_viewer.AnimatedSpriteXMLLoader;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * The AnimatedSpriteViewer application lets one load and view
@@ -75,7 +78,7 @@ public class AnimatedSpriteViewer extends JFrame
 
     // THIS WILL STORE A SELECTABLE LIST OF THE LOADED SPRITES
     private JScrollPane spriteTypesListJSP;
-    private JList spriteTypesList;
+    public JList spriteTypesList;//try later with private
     private DefaultListModel spriteTypesListModel;
     
     // THIS WELL LET THE USER CHOOSE DIFFERENT ANIMATION STATES TO VIEW
@@ -91,6 +94,9 @@ public class AnimatedSpriteViewer extends JFrame
     // THIS TOOLBAR WILL ALLOW THE USER TO CONTROL ANIMATION
     private JPanel animationToolbar;
     private JButton startButton,stopButton,slowDownButton,speedUpButton;
+    
+    
+    public static int frid = 0;
     
     /**
      * The entire application will be initialized from here, including
@@ -156,7 +162,10 @@ public class AnimatedSpriteViewer extends JFrame
             System.exit(0);
         }
     }
-    
+    public static void setFrid(int p){
+        frid =p;
+        
+    }
     /**
      * This initializes all the GUI components and places
      * them into the frame in their appropriate locations.
@@ -178,6 +187,18 @@ public class AnimatedSpriteViewer extends JFrame
         //pass animatedsprite viewer then call this
         //put listener on the Jlist
         
+         MouseListener mouseListener = new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 1) {
+                int index = spriteTypesList.locationToIndex(e.getPoint());
+                System.out.println("Clicked on Item " + index);
+                AnimatedSpriteViewer.setFrid(index);
+                frid = index;
+                clearAnimationStatesComboBox();
+            }
+            }
+        };
+        spriteTypesList.addMouseListener(mouseListener);
         
         
         spriteTypesList.setModel(spriteTypesListModel);
@@ -234,28 +255,31 @@ public class AnimatedSpriteViewer extends JFrame
      * This helper method empties the combo box with animations
      * and disables the component.
      */
-    private void clearAnimationStatesComboBox()
+    public void clearAnimationStatesComboBox()
     {
         spriteStateComboBoxModel.removeAllElements();
+       //if(frid==-1){
         spriteStateComboBoxModel.addElement(SELECT_ANIMATION_TEXT); 
-        spriteStateComboBoxModel.addElement("Arbitrary Stuff"); 
         //get all animation states
-        
+        //}
+       // else{
         spriteAnimationStates = new ArrayList<String>();
         ///
+          String man = spriteTypeNames.get(frid);
+          String mons = "./data/sprite_types/";
+          mons += man;
+          mons += "/";
+          String frontc = man;
+          frontc += ".xml";
         
         try
         {
             // THIS WILL LOAD AND VALIDATE
             // OUR XML FILES
             xmlLoader = new AnimatedSpriteXMLLoader(this);
-            
-            
-            
-            
             // FIRST UP IS THE SPRITE TYPES LIST
-            xmlLoader.loadSpriteAnimationStates("./data/sprite_types/box_man/",//FORGOT THE FUCKIN UNDERSCORE
-                             "box_man.xml", spriteAnimationStates);           
+            xmlLoader.loadSpriteAnimationStates(mons,//FORGOT THE FUCKIN UNDERSCORE
+                             frontc, spriteAnimationStates);           
         }
         catch(InvalidXMLFileFormatException ixffe)
         {
@@ -266,10 +290,11 @@ public class AnimatedSpriteViewer extends JFrame
             JOptionPane.showMessageDialog(this, ixffe.toString());
             System.exit(0);
         }
-        
-        
+        for(int ntfsINDX=0;ntfsINDX<spriteAnimationStates.size();ntfsINDX++){
+            spriteStateComboBoxModel.addElement(spriteAnimationStates.get(ntfsINDX));
+        }
         ///
-        
+        //}
         ///
         spriteStateCombobox.setEnabled(true);      
     }
