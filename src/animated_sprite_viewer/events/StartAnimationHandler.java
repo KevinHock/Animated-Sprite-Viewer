@@ -1,5 +1,6 @@
 package animated_sprite_viewer.events;
 
+//import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import sprite_renderer.SceneRenderer;
@@ -25,11 +26,8 @@ public class StartAnimationHandler implements ActionListener
      */
     public StartAnimationHandler(SceneRenderer initRenderer)
     {
-        // KEEP THIS FOR LATER
         renderer = initRenderer;
-        //if it was slow down button then slow down...
     }    
-
     /**
      * Here's the actual method called when the user clicks the 
      * start animation method, which results in unpausing of the
