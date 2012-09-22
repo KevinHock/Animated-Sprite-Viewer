@@ -36,6 +36,5 @@ public class slowDownAnimationHandler implements ActionListener
     public void actionPerformed(ActionEvent ae)
     {
         renderer.setTimeScaler((float)2.0);
-        renderer.unpauseScene();
     }
 }
