@@ -36,6 +36,5 @@ public class speedUpAnimationHandler implements ActionListener
     public void actionPerformed(ActionEvent ae)
     {
         renderer.setTimeScaler((float).5);
-        renderer.unpauseScene();
     }
 }
