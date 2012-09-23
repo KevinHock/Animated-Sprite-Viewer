@@ -388,17 +388,15 @@ public class AnimatedSpriteViewer extends JFrame
         spriteList.add(player);
     }
     
-   private SpriteType loadSpriteType(String type_man, String pathOfMan)//ArrayList<Integer> of IDs and ArrayList<
+   private SpriteType loadSpriteType(String type_man, String pathOfMan)
     {
         // WE'LL USE THESE TO INITIALIZE OUR SPRITE TYPE
-        //String prefix = type_man;
-        //String path;
-        //path = pathOfMan;
         int idCounter = 1;
-        ArrayList<AnimationState> g = new ArrayList<AnimationState>();
-        //Adds all of those animation states
-        for(int endura=0;endura<spriteAnimationStates.size();endura++)
-            g.add(AnimationState.valueOf(spriteAnimationStates.get(endura)));
+        ArrayList<AnimationState> listOfAnimationStates = new ArrayList<AnimationState>();
+        
+        //Adds all of those animation states in Animation State form (not String form like spriteAnimationStates)
+        for(int index=0;index<spriteAnimationStates.size();index++)
+            listOfAnimationStates.add(AnimationState.valueOf(spriteAnimationStates.get(index)));
         
         // WE NEED THE TRACKER TO ENSURE FULL IMAGE LOADING
         MediaTracker tracker = new MediaTracker(this);
@@ -406,45 +404,26 @@ public class AnimatedSpriteViewer extends JFrame
         // AND HERE'S THE ACTUAL SPRITE TYPE
         SpriteType man = new SpriteType();
         
-        // AGAIN, WE ARE WAY OVER-SIMPLIFYING THE INITIALIZATION
-        // OF THIS DATA. THIS SHOULD REALLY BE DONE FROM A FILE.
-        // HERE WE'RE JUST MAKING A COUPLE OF SIMPLE PoseLists, 
-        // ONE FOR EACH STATE
-        for (int i = 0; i < g.size(); i++){
-            // NOTICE THAT WE HAVE HARD-CODED THE POSES,
-            // i.e. THE IMAGE ID/DURATION NUMBERS BELOW
-            
+        //Add all of the images
+        for (int eachAnimationState = 0; eachAnimationState < listOfAnimationStates.size(); eachAnimationState++){
             // CREATE A NEW LIST
-            PoseList poseList = man.addPoseList(g.get(i));
-            // AND ADD THE POSES. THE midPoseID VALUE IS JUST 
-            // A SILLY LITTLE MECHANISM TO HARD-CODE FIVE
-            // IMAGES TOGETHER INTO A POSE SEQUENCE (PoseList)
+            PoseList poseList = man.addPoseList(listOfAnimationStates.get(eachAnimationState));
+            //Get the two-dimensional attribute array for each animation state.
+            String[][] array = spriteAnimationAttributes.get(eachAnimationState);
+            //For every imageID there is going to be a duration so we'll just get the length of how many durations there are.
+            String[] anotherArray = array[0];
+            int howManyDurations = anotherArray.length;
             
-            int midPoseID = idCounter + 2;
-            poseList.addPose(midPoseID,     15);
-            poseList.addPose(midPoseID+1,    5);
-            poseList.addPose(midPoseID+2,   10);
-            poseList.addPose(midPoseID+1,    5);
-            poseList.addPose(midPoseID,     15);
-            poseList.addPose(midPoseID-1,    5);
-            poseList.addPose(midPoseID-2,   10);
-            poseList.addPose(midPoseID-1,    5);
-            /*
-            poseList.addPose(8,   1);
-            poseList.addPose(7,   2);
-            poseList.addPose(6,   3);
-            poseList.addPose(7,   3);
-            poseList.addPose(8,   2);
-            poseList.addPose(9,   1);
-            poseList.addPose(10,  2);
-            poseList.addPose(9,   1);
-            * */
+            //For how ever many durations/imageIDs there are add them to the postList.
+            for(int eachAttribute=0;eachAttribute<howManyDurations;eachAttribute++)
+                poseList.addPose(Integer.parseInt(array[1][eachAttribute]),Integer.parseInt(array[0][eachAttribute]));
+            
             // AND NOW LOAD THE IMAGES
-            for (int j = 1; j <= 5; j++)
+            for (int pngNumber = 1; pngNumber<= 5; pngNumber++)
             {
                 // THE IMAGE NAMES ARE PREDICABLE
                 String fileName = type_man + "_"
-                        + g.get(i) + "_" + j + ".png";
+                        + listOfAnimationStates.get(eachAnimationState) + "_" + pngNumber + ".png";
                 
                 // LOAD THE IMAGE
                 Image img = loadImageInBatch(pathOfMan, fileName, tracker, idCounter);
