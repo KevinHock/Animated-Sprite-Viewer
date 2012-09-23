@@ -260,19 +260,19 @@ public class AnimatedSpriteViewer extends JFrame
         spriteStateComboBoxModel.addElement(SELECT_ANIMATION_TEXT);
         //For when the user clicks on the JList
         if(fromMouse){
+            //INITIALIZE THE ARRAYLIST THAT loadSpriteAnimationStatesAndAttributes needs
             spriteAnimationStates = new ArrayList<String>();
             spriteAnimationAttributes = new ArrayList<String[][]>();
+            //USE THESE STRINGS FOR PARAMETERS IN loadSpriteAnimationStatesAndAttributes
             spriteType = spriteTypeNames.get(indexOfName);
             directoryOfSprite = SPRITES_DATA_PATH;
-            directoryOfSprite += spriteType;
-            directoryOfSprite += "/";
-            String xmlOfSpriteType = spriteType;
-            xmlOfSpriteType += ".xml";
+            directoryOfSprite += spriteType += "/";
+            String xmlOfSpriteType = spriteType += ".xml";
             try{
                 // THIS WILL LOAD AND VALIDATE
                 // OUR XML FILES
                 xmlLoader = new AnimatedSpriteXMLLoader(this);
-                // FIRST UP IS THE SPRITE TYPES LIST
+                // FIRST UP ARE THE ANIMATIONS STATES AND ATTRIBUTES
                 xmlLoader.loadSpriteAnimationStatesAndAttributes(directoryOfSprite, xmlOfSpriteType, spriteAnimationStates, spriteAnimationAttributes);        
             }
             catch(InvalidXMLFileFormatException ixffe){
@@ -283,8 +283,9 @@ public class AnimatedSpriteViewer extends JFrame
                 JOptionPane.showMessageDialog(this, ixffe.toString());
                 System.exit(0);
             }
-            for(int ntfsINDX=0;ntfsINDX<spriteAnimationStates.size();ntfsINDX++)
-                spriteStateComboBoxModel.addElement(spriteAnimationStates.get(ntfsINDX));
+            //PUT ALL OF THE ANIMATION STATES INTO THE COMBO BOX
+            for(int eachAnimationState=0;eachAnimationState<spriteAnimationStates.size();eachAnimationState++)
+                spriteStateComboBoxModel.addElement(spriteAnimationStates.get(eachAnimationState));
             class MyActionListener implements ActionListener {
                 public void actionPerformed(ActionEvent evt) {
                 JComboBox cb = (JComboBox)evt.getSource();
