@@ -60,13 +60,12 @@ public class AnimatedSpriteXMLLoader
     public static final String DURATION_ATTRIBUTE_NAME = "duration";
 
     /**
-     * Constructor for this xml loader. 
+     * Constructor for this XML loader. 
      * 
-     * @param initView The view will be neede for loading the images
+     * @param initView The view will be needed for loading the images
      */
     public AnimatedSpriteXMLLoader(AnimatedSpriteViewer initView)
     {
-        // WE'LL NEED THIS LATER
         view = initView;
     }
 
@@ -87,10 +86,10 @@ public class AnimatedSpriteXMLLoader
      * @throws InvalidXMLFileFormatException Thrown if we encounter an xml
      * file that does not validate against its schema.
      */
-    public static void loadSpriteTypeNames(    String path,
-                                        String spriteTypesXMLFile,
-                                        ArrayList<String> spriteTypeNames)
-            throws InvalidXMLFileFormatException
+    public static void loadSpriteTypeNames(String path,
+                                           String spriteTypesXMLFile,
+                                           ArrayList<String> spriteTypeNames)
+                                           throws InvalidXMLFileFormatException
     {
         // FIRST LET'S BUILD THE NAME OF THE XML FILE
         String xmlFile = (path + spriteTypesXMLFile).trim();
@@ -101,6 +100,9 @@ public class AnimatedSpriteXMLLoader
         // IS THE XML VALID PER THE SCHEMA?
         WhitespaceFreeXMLDoc cleanDoc = loadXMLDocument(xmlFile, xsdFile);
         
+        //A placeholder string to hold each sprite name.
+        String eachNameOfSprite;
+        
         // IF THERE'S A PROBLEM LOADING THE XML FILE THEN
         // SKIP THIS SPRITE TYPE
         if (cleanDoc == null)
@@ -109,22 +111,18 @@ public class AnimatedSpriteXMLLoader
         }
         
         // IT'S A VALID XML FILE SO LET'S GET THE DATA
-        WhitespaceFreeXMLNode spriteTypeListNode = cleanDoc.getRoot();//clean doc and get node sprite_type_list
-        //spriteTypeListNode.getChildrenOfType("sprite_type");
-        ArrayList<WhitespaceFreeXMLNode> gotRoot = spriteTypeListNode.getChildrenOfType("sprite_type");
-        for(int qq=0;qq<gotRoot.size();qq++){
-            String sheep = gotRoot.get(qq).getData();
-            spriteTypeNames.add(sheep);
-        }
-
-        /*String ddsdsdsds = "whereZZZZZ";
-        Iterator<WhitespaceFreeXMLNode> spriteTypesIterator = spriteTypeListNode.getChildren();//Iterator of sprite_type 
-        while(spriteTypesIterator.hasNext())
+        //Gets the root of sprite_type_list.xml which is <sprite_type_list>
+        WhitespaceFreeXMLNode spriteTypeListNode = cleanDoc.getRoot();
+        
+        //Gets the children of <sprite_type_list> named <sprite_type> containing the different names of the sprites and puts them in an ArrayList.
+        ArrayList<WhitespaceFreeXMLNode> listOfSpriteTypes = spriteTypeListNode.getChildrenOfType("sprite_type");
+        
+        //A loop to go through each <sprite_type> and get the names of each sprite to add to the arrayList of Strings named spriteTypeNames.
+        for(int index=0;index<listOfSpriteTypes.size();index++)
         {
-            WhitespaceFreeXMLNode spriteTypeNode = spriteTypesIterator.next();
-            String spriteTypeName = spriteTypeNode.getData();//get data of sprite type
-            spriteTypeNames.add(spriteTypeName);
-        }*/            
+            eachNameOfSprite = listOfSpriteTypes.get(index).getData();
+            spriteTypeNames.add(eachNameOfSprite);
+        }
     }
     
     /**
@@ -132,32 +130,30 @@ public class AnimatedSpriteXMLLoader
      * xml file argument and loads these names into the spriteTypeNames
      * list.
      * 
-     * @param path Path to where the sprite types home directory. Note that
-     * each sprite would have its own directory inside this directory.
+     * @param pathToSprite Path to where the sprite is.
      * 
-     * @param spriteTypesXMLFile File name for the xml file with a list of
-     * all the sprite types.
+     * @param xmlOfSpriteType File name for the xml file of the sprite.
      * 
-     * @param animationStates List where we'll put all the sprite type
-     * names we find.
+     * @param animationStates List where we'll put all the sprite animation
+     * states.
      * 
      * @throws InvalidXMLFileFormatException Thrown if we encounter an xml
      * file that does not validate against its schema.
      */
-    public static void loadSpriteAnimationStates(    String path,
-                                        String spriteTypesXMLFile,
-                                        ArrayList<String> animationStates)
-            throws InvalidXMLFileFormatException
+    public static void loadSpriteAnimationStates(String pathToSprite,
+                                                 String xmlOfSpriteType,
+                                                 ArrayList<String> animationStates)
+                                                 throws InvalidXMLFileFormatException
     {
         // FIRST LET'S BUILD THE NAME OF THE XML FILE
-        String xmlFile = (path + spriteTypesXMLFile).trim();
+        String xmlFile = (pathToSprite + xmlOfSpriteType).trim();
         
         // NOW LET'S BUILD THE NAME OF THE SCHEMA
         String xsdFile = "./data/sprite_types/sprite_type.xsd";
         
         // IS THE XML VALID PER THE SCHEMA?
         WhitespaceFreeXMLDoc cleanDoc = loadXMLDocument(xmlFile, xsdFile);
-        int p =5;
+
         // IF THERE'S A PROBLEM LOADING THE XML FILE THEN
         // SKIP THIS SPRITE TYPE
         if (cleanDoc == null)
@@ -165,80 +161,46 @@ public class AnimatedSpriteXMLLoader
             throw new InvalidXMLFileFormatException(xmlFile, xsdFile);
         }
         
+        
+        
+        
+        ArrayList<String> durations = new ArrayList<String>();
+        ArrayList<String> image_ids = new ArrayList<String>();
+        ArrayList<String[][]> action = new ArrayList<String[][]>();
+        
         // IT'S A VALID XML FILE SO LET'S GET THE DATA
-        WhitespaceFreeXMLNode root = cleanDoc.getRoot();//clean doc and get node sprite_type_list
-        //spriteTypeListNode.getChildrenOfType("sprite_type");
-        ArrayList<WhitespaceFreeXMLNode> animationsList = root.getChildrenOfType("animations_list");
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        /*
-         * Make two arrayList, one original array list and one that gets reinitialized to each child list.
-         */
-        
-        ArrayList<WhitespaceFreeXMLNode> oal = animationsList;
-        ArrayList<WhitespaceFreeXMLNode> reinitialized;
-        ArrayList<WhitespaceFreeXMLNode> reinitializedNested;
-        String q;
-        for(int i=0;i<oal.size();i++){
-            reinitialized = animationsList.get(i).getChildrenOfType("animation_state");
-            for(int ss=0;ss<reinitialized.size();ss++){
-                reinitializedNested = reinitialized.get(ss).getChildrenOfType("state");
-                for(int fodor=0;fodor<reinitializedNested.size();fodor++){
-                    animationStates.add(reinitializedNested.get(fodor).getData());
+        //Gets the root of sprite_type_list.xml which is <sprite_type>.
+        WhitespaceFreeXMLNode root = cleanDoc.getRoot();
+        //Puts all the animations_list's in an ArrayList.
+        ArrayList<WhitespaceFreeXMLNode> listOfAnimations_Lists = root.getChildrenOfType("animations_list");
+        //Make an ArrayList for each nested loop so every child of every child can be accessed.
+        ArrayList<WhitespaceFreeXMLNode> listOfAnimation_States,listOfStates,listOfAnimation_Sequences,listOfPoses;
+        //Go through each animation list and get each animation_state.
+        for(int eachAnimations_List=0;eachAnimations_List<listOfAnimations_Lists.size();eachAnimations_List++){
+            listOfAnimation_States = listOfAnimations_Lists.get(eachAnimations_List).getChildrenOfType("animation_state");
+            //Go through each animation state and get each state.
+            for(int eachAnimation_State=0;eachAnimation_State<listOfAnimation_States.size();eachAnimation_State++){
+                listOfStates = listOfAnimation_States.get(eachAnimation_State).getChildrenOfType("state");
+                //Add each state to the animationStates parameter.
+                for(int eachState=0;eachState<listOfStates.size();eachState++)
+                    animationStates.add(listOfStates.get(eachState).getData());
+                listOfAnimation_Sequences = listOfAnimation_States.get(eachAnimation_State).getChildrenOfType("animation_sequence");
+                //Go through each animation sequence and get each pose.
+                for(int eachPose=0;eachPose<listOfAnimation_Sequences.size();eachPose++){
+                    listOfPoses = listOfAnimation_Sequences.get(eachPose).getChildrenOfType("pose");
+                    //Make an array for the 2 attributes of each pose.
+                    String attributeArray[][] = new String[2][listOfPoses.size()];
+                    //Fill the array with each attribute.
+                    for(int eachAttribute=0;eachAttribute<listOfPoses.size();eachAttribute++){
+                        attributeArray[0][eachAttribute] = listOfPoses.get(eachAttribute).getAttributeValue("duration");
+                        attributeArray[1][eachAttribute] = listOfPoses.get(eachAttribute).getAttributeValue("image_id");
+                    }
+                    //Add the attribute array to the arrayList holding all the attribute arrays for each pose.
+                    action.add(attributeArray);
                 }
             }
         }
-        
-        ////////
-        ////////
-        ////////
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        //
-        ArrayList<WhitespaceFreeXMLNode> blah = animationsList.get(0).getChildrenOfType("animations_list");
-        WhitespaceFreeXMLNode statesParent = animationsList.get(0);//dont assume 1 animationslist
-        ArrayList<WhitespaceFreeXMLNode> states = statesParent.getChildrenOfType("animation_state");
-        String ghi = states.get(0).getData();//should be states.getChildrenOfType"state" then
-        ArrayList<WhitespaceFreeXMLNode> asm = states.get(0).getChildrenOfType("state");
-        //ArrayList<WhitespaceFreeXMLNode> lalaalal;
-        //ArrayList<WhitespaceFreeXMLNode> ghi;
-        for(int qq=0;qq<states.size();qq++){
-            //lalaalal.add(states.get(qq).getChildrenOfType("state"));
-            //asm = states.get(qq).getChildrenOfType("state");//maybe make an array based on the size of each 
-        }
-        for(int wong=0;wong<10;wong++){
-        }
-        /*
-        for(int qq=0;qq<gotRoot.size();qq++){
-            String sheep = gotRoot.get(qq).getData();
-            animationStates.add(sheep);
-        }
-        */
+        System.out.println("gh");
     }
     
     /**
