@@ -126,9 +126,9 @@ public class AnimatedSpriteXMLLoader
     }
     
     /**
-     * This method extracts the animation states of all sprite types from the provided
-     * xml file argument and loads these names into the spriteTypeNames
-     * list.
+     * This method extracts the animation states and attributes of all sprite types from the provided
+     * xml file argument and loads these names into the animationStates and animationAttributes
+     * lists.
      * 
      * @param pathToSprite Path to where the sprite is.
      * 
@@ -137,12 +137,16 @@ public class AnimatedSpriteXMLLoader
      * @param animationStates List where we'll put all the sprite animation
      * states.
      * 
+     * @param animationAttributes List where we'll put all the sprite animation
+     * attributes.
+     * 
      * @throws InvalidXMLFileFormatException Thrown if we encounter an xml
      * file that does not validate against its schema.
      */
-    public static void loadSpriteAnimationStates(String pathToSprite,
+    public static void loadSpriteAnimationStatesAndAttributes(String pathToSprite,
                                                  String xmlOfSpriteType,
-                                                 ArrayList<String> animationStates)
+                                                 ArrayList<String> animationStates,
+                                                 ArrayList<String[][]> animationAttributes)
                                                  throws InvalidXMLFileFormatException
     {
         // FIRST LET'S BUILD THE NAME OF THE XML FILE
@@ -160,14 +164,7 @@ public class AnimatedSpriteXMLLoader
         {
             throw new InvalidXMLFileFormatException(xmlFile, xsdFile);
         }
-        
-        
-        
-        
-        ArrayList<String> durations = new ArrayList<String>();
-        ArrayList<String> image_ids = new ArrayList<String>();
-        ArrayList<String[][]> action = new ArrayList<String[][]>();
-        
+
         // IT'S A VALID XML FILE SO LET'S GET THE DATA
         //Gets the root of sprite_type_list.xml which is <sprite_type>.
         WhitespaceFreeXMLNode root = cleanDoc.getRoot();
@@ -184,6 +181,7 @@ public class AnimatedSpriteXMLLoader
                 //Add each state to the animationStates parameter.
                 for(int eachState=0;eachState<listOfStates.size();eachState++)
                     animationStates.add(listOfStates.get(eachState).getData());
+                //Puts all the animation_sequences's in an ArrayList.
                 listOfAnimation_Sequences = listOfAnimation_States.get(eachAnimation_State).getChildrenOfType("animation_sequence");
                 //Go through each animation sequence and get each pose.
                 for(int eachPose=0;eachPose<listOfAnimation_Sequences.size();eachPose++){
@@ -195,12 +193,11 @@ public class AnimatedSpriteXMLLoader
                         attributeArray[0][eachAttribute] = listOfPoses.get(eachAttribute).getAttributeValue("duration");
                         attributeArray[1][eachAttribute] = listOfPoses.get(eachAttribute).getAttributeValue("image_id");
                     }
-                    //Add the attribute array to the arrayList holding all the attribute arrays for each pose.
-                    action.add(attributeArray);
+                    //Add the attribute array to the animationAttributes parameter holding all the attribute arrays for each pose.
+                    animationAttributes.add(attributeArray);
                 }
             }
         }
-        System.out.println("gh");
     }
     
     /**
