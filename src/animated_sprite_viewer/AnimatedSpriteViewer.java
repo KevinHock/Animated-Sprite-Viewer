@@ -266,8 +266,10 @@ public class AnimatedSpriteViewer extends JFrame
             //USE THESE STRINGS FOR PARAMETERS IN loadSpriteAnimationStatesAndAttributes
             spriteType = spriteTypeNames.get(indexOfName);
             directoryOfSprite = SPRITES_DATA_PATH;
-            directoryOfSprite += spriteType += "/";
-            String xmlOfSpriteType = spriteType += ".xml";
+            directoryOfSprite += spriteType;
+            directoryOfSprite += "/";
+            String xmlOfSpriteType = spriteType; 
+            xmlOfSpriteType += ".xml";
             try{
                 // THIS WILL LOAD AND VALIDATE
                 // OUR XML FILES
@@ -348,16 +350,16 @@ public class AnimatedSpriteViewer extends JFrame
     private void initHandlers()
     {
         // CONSTRUCT AND REGISTER ALL THE HANDLERS FOR THE JLIST
-        JListHandler jListListener = new JListHandler(this);
+        JListHaandler jListListener = new JListHaandler(this);
         spriteTypesList.addMouseListener(jListListener);
         // CONSTRUCT AND REGISTER ALL THE HANDLERS FOR THE BUTTONS
         StartAnimationHandler startah = new StartAnimationHandler(sceneRenderingPanel);
         startButton.addActionListener(startah);
         StopAnimationHandler stopah = new StopAnimationHandler(sceneRenderingPanel);
         stopButton.addActionListener(stopah);
-        SlowDownAnimationHandler slowah = new SlowDownAnimationHandler(sceneRenderingPanel);
+        SlowDownAnimationHaandler slowah = new SlowDownAnimationHaandler(sceneRenderingPanel);
         slowDownButton.addActionListener(slowah);
-        SpeedUpAnimationHandler speedah = new SpeedUpAnimationHandler(sceneRenderingPanel);
+        SpeedUpAnimationHaandler speedah = new SpeedUpAnimationHaandler(sceneRenderingPanel);
         speedUpButton.addActionListener(speedah);
     }
     /**
