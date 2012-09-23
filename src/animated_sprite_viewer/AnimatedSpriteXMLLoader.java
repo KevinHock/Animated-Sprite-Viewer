@@ -168,31 +168,41 @@ public class AnimatedSpriteXMLLoader
         // IT'S A VALID XML FILE SO LET'S GET THE DATA
         //Gets the root of sprite_type_list.xml which is <sprite_type>.
         WhitespaceFreeXMLNode root = cleanDoc.getRoot();
+        
         //Puts all the animations_list's in an ArrayList.
         ArrayList<WhitespaceFreeXMLNode> listOfAnimations_Lists = root.getChildrenOfType("animations_list");
+        
         //Make an ArrayList for each nested loop so every child of every child can be accessed.
         ArrayList<WhitespaceFreeXMLNode> listOfAnimation_States,listOfStates,listOfAnimation_Sequences,listOfPoses;
+        
         //Go through each animation list and get each animation_state.
         for(int eachAnimations_List=0;eachAnimations_List<listOfAnimations_Lists.size();eachAnimations_List++){
             listOfAnimation_States = listOfAnimations_Lists.get(eachAnimations_List).getChildrenOfType("animation_state");
+            
             //Go through each animation state and get each state.
             for(int eachAnimation_State=0;eachAnimation_State<listOfAnimation_States.size();eachAnimation_State++){
                 listOfStates = listOfAnimation_States.get(eachAnimation_State).getChildrenOfType("state");
+                
                 //Add each state to the animationStates parameter.
                 for(int eachState=0;eachState<listOfStates.size();eachState++)
                     animationStates.add(listOfStates.get(eachState).getData());
+                
                 //Puts all the animation_sequences's in an ArrayList.
                 listOfAnimation_Sequences = listOfAnimation_States.get(eachAnimation_State).getChildrenOfType("animation_sequence");
+                
                 //Go through each animation sequence and get each pose.
                 for(int eachPose=0;eachPose<listOfAnimation_Sequences.size();eachPose++){
                     listOfPoses = listOfAnimation_Sequences.get(eachPose).getChildrenOfType("pose");
+                    
                     //Make an array for the 2 attributes of each pose.
                     String attributeArray[][] = new String[2][listOfPoses.size()];
+                    
                     //Fill the array with each attribute.
                     for(int eachAttribute=0;eachAttribute<listOfPoses.size();eachAttribute++){
                         attributeArray[0][eachAttribute] = listOfPoses.get(eachAttribute).getAttributeValue("duration");
                         attributeArray[1][eachAttribute] = listOfPoses.get(eachAttribute).getAttributeValue("image_id");
                     }
+                    
                     //Add the attribute array to the animationAttributes parameter holding all the attribute arrays for each pose.
                     animationAttributes.add(attributeArray);
                 }
