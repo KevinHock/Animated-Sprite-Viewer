@@ -45,7 +45,7 @@ public class AnimatedSpriteViewer extends JFrame
      * Go over the global variables and describe their use
      * Put the two listeners in their own classes.
      * Should I sceneRenderingPanel.unpauseScene(); after it's clicked?
-     * 
+     * Go over the comments in the handler classes.
      * 
      * 
      * 
@@ -193,17 +193,6 @@ public class AnimatedSpriteViewer extends JFrame
         }
         spriteTypesList = new JList();
         
-         MouseListener mouseListener = new MouseAdapter() {
-            public void mouseClicked(MouseEvent e){
-                if (e.getClickCount() == 1) {
-                    int index = spriteTypesList.locationToIndex(e.getPoint());
-                    clearAnimationStatesComboBox(true, index);
-                }
-            }
-        };
-        spriteTypesList.addMouseListener(mouseListener);
-        
-        
         spriteTypesList.setModel(spriteTypesListModel);
         spriteTypesListJSP = new JScrollPane(spriteTypesList);
         
@@ -268,7 +257,8 @@ public class AnimatedSpriteViewer extends JFrame
     public void clearAnimationStatesComboBox(boolean fromMouse, int indexOfName)
     {
         spriteStateComboBoxModel.removeAllElements();
-        spriteStateComboBoxModel.addElement(SELECT_ANIMATION_TEXT); 
+        spriteStateComboBoxModel.addElement(SELECT_ANIMATION_TEXT);
+        //For when the user clicks on the JList
         if(fromMouse){
             spriteAnimationStates = new ArrayList<String>();
             spriteAnimationAttributes = new ArrayList<String[][]>();
@@ -300,8 +290,8 @@ public class AnimatedSpriteViewer extends JFrame
                 JComboBox cb = (JComboBox)evt.getSource();
                 Object item = cb.getSelectedItem();
                 if(item!=null)
-                    for(int dowd=0;dowd<spriteAnimationStates.size();dowd++)
-                        if(item.equals(spriteAnimationStates.get(dowd)))
+                    for(int eachAnimationState=0;eachAnimationState<spriteAnimationStates.size();eachAnimationState++)
+                        if(item.equals(spriteAnimationStates.get(eachAnimationState)))
                             loadSprite((String)item,spriteType,directoryOfSprite);
                 }
             }
@@ -310,6 +300,7 @@ public class AnimatedSpriteViewer extends JFrame
             spriteStateCombobox.addActionListener(actionListener);
             spriteStateCombobox.setEnabled(true);
         }
+        //For when the ComboBox is first made.
         else
             spriteStateCombobox.setEnabled(false);
     }
@@ -355,14 +346,17 @@ public class AnimatedSpriteViewer extends JFrame
      */
     private void initHandlers()
     {
+        // CONSTRUCT AND REGISTER ALL THE HANDLERS FOR THE JLIST
+        JListHandler jListListener = new JListHandler(this);
+        spriteTypesList.addMouseListener(jListListener);
         // CONSTRUCT AND REGISTER ALL THE HANDLERS FOR THE BUTTONS
         StartAnimationHandler startah = new StartAnimationHandler(sceneRenderingPanel);
         startButton.addActionListener(startah);
         StopAnimationHandler stopah = new StopAnimationHandler(sceneRenderingPanel);
         stopButton.addActionListener(stopah);
-        slowDownAnimationHandler slowah = new slowDownAnimationHandler(sceneRenderingPanel);
+        SlowDownAnimationHandler slowah = new SlowDownAnimationHandler(sceneRenderingPanel);
         slowDownButton.addActionListener(slowah);
-        speedUpAnimationHandler speedah = new speedUpAnimationHandler(sceneRenderingPanel);
+        SpeedUpAnimationHandler speedah = new SpeedUpAnimationHandler(sceneRenderingPanel);
         speedUpButton.addActionListener(speedah);
     }
     /**
@@ -382,6 +376,7 @@ public class AnimatedSpriteViewer extends JFrame
         player.setPositionY(250);
         player.setVelocityX(0);
         player.setVelocityY(0);
+        
         //CLEARS DUH SPRITE LIST SO ONLY ONE GETS ANIMATED
         spriteList.clear();//yeahhh
         // AND PUT THE PLAYER IN THE SCENE
