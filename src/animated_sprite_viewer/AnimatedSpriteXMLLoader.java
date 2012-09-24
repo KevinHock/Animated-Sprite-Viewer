@@ -251,6 +251,14 @@ public class AnimatedSpriteXMLLoader
         //Puts all the animations_list's in an ArrayList.
         ArrayList<WhitespaceFreeXMLNode> listOfImages_List = root.getChildrenOfType("images_list");
         
+        ArrayList<WhitespaceFreeXMLNode> listOfImages;
+        int numberOfImages;
+        //Go through each Images list.
+        for(int eachImages_List=0;eachImages_List<listOfImages_List.size();eachImages_List++){
+            listOfImages = listOfImages_List.get(eachImages_List).getChildrenOfType("image_file");
+            numberOfImages = listOfImages.size();
+            
+        }
         
     }
     
