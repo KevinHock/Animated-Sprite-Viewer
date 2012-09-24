@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.List;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -334,15 +336,15 @@ public class AnimatedSpriteViewer extends JFrame
      * 
      * @param indexOfName Contains the index of the name of the sprite to load the poses of into the combo box.
      */
-    public void getNumberOfImagesForEachState()
+    public ArrayList<String> getNumberOfFiles(ArrayList<Integer> numberOfImagesForEachState)
     {
-        ArrayList<Integer> numberOfImagesForEachState = new ArrayList<Integer>();
+        ArrayList<String> names = new ArrayList<String>();
         try{
             // THIS WILL LOAD AND VALIDATE
             // OUR XML FILES
             xmlLoader = new AnimatedSpriteXMLLoader(this);
             //NEXT UP ARE THE NUMBERS OF IMAGES FOR EVERY STATE
-            xmlLoader.loadNumberOfImagesForEachState(directoryOfSprite, xmlOfSpriteType, numberOfImagesForEachState);        
+            xmlLoader.loadNumberOfFiles(directoryOfSprite, xmlOfSpriteType, numberOfImagesForEachState);        
         }
         catch(InvalidXMLFileFormatException ixffe){
             // IF WE DON'T HAVE A VALID SPRITE TYPE 
@@ -352,6 +354,7 @@ public class AnimatedSpriteViewer extends JFrame
             JOptionPane.showMessageDialog(this, ixffe.toString());
             System.exit(0);
         }
+        return names;
     }
     
     
@@ -363,8 +366,6 @@ public class AnimatedSpriteViewer extends JFrame
      */
     public void loadSprite(String state,String type_man, String pathOfMan)
     {
-        //Get's the number of images for each state.
-        getNumberOfImagesForEachState();
         //Loads the spirte type
         SpriteType duhSprite = loadSpriteType(type_man,pathOfMan);
         
@@ -385,7 +386,7 @@ public class AnimatedSpriteViewer extends JFrame
     }
     
    private SpriteType loadSpriteType(String type_man, String pathOfMan)
-    {
+   {
         // WE'LL USE THESE TO INITIALIZE OUR SPRITE TYPE
         int idCounter = 1;
         ArrayList<AnimationState> listOfAnimationStates = new ArrayList<AnimationState>();
@@ -406,20 +407,37 @@ public class AnimatedSpriteViewer extends JFrame
             PoseList poseList = man.addPoseList(listOfAnimationStates.get(eachAnimationState));
             //Get the two-dimensional attribute array for each animation state.
             String[][] array = spriteAnimationAttributes.get(eachAnimationState);
-            //For every imageID there is going to be a duration so we'll just get the length of how many durations there are.
-            String[] anotherArray = array[0];
-            int howManyDurations = anotherArray.length;
+            //For every imageID there is going to be a duration so we'll just get the length of how many imageIDs there are.
+            String[] imageIDsArray = array[1];
+            int howManyImageIDs = imageIDsArray.length;
             
             //For how ever many durations/imageIDs there are add them to the postList.
-            for(int eachAttribute=0;eachAttribute<howManyDurations;eachAttribute++)
+            for(int eachAttribute=0;eachAttribute<howManyImageIDs;eachAttribute++)
                 poseList.addPose(Integer.parseInt(array[1][eachAttribute]),Integer.parseInt(array[0][eachAttribute]));
+            ArrayList<Integer> imageIDsArrayList = new ArrayList<Integer>();
+            for(int i=0;i<howManyImageIDs;i++)
+                imageIDsArrayList.add(Integer.parseInt(imageIDsArray[i]));
+            ArrayList<Integer> uniqueIDList = new ArrayList<Integer>();
+            for(int eachImageID=0;eachImageID<howManyImageIDs;eachImageID++)
+                if(!uniqueIDList.contains(imageIDsArrayList.get(eachImageID)))
+                    uniqueIDList.add(imageIDsArrayList.get(eachImageID));
+            
+            //uniqueIDList.sort();
+            
+            //for (List<Integer> k : uniqueIDList) {
+                Collections.sort(uniqueIDList);
+            //}
+            System.out.println("bing");
+            //Get's the number of images for each state.
+            ArrayList<String> names = getNumberOfFiles(uniqueIDList);
             
             // AND NOW LOAD THE IMAGES
-            for (int pngNumber = 1; pngNumber<= 5; pngNumber++)
+            for (int uniqueID=1; uniqueID<= 5; uniqueID++)
             {
+                //String pngNumber = uniqueIDList.get(uniqueID).toString();
                 // THE IMAGE NAMES ARE PREDICABLE
                 String fileName = type_man + "_"
-                        + listOfAnimationStates.get(eachAnimationState) + "_" + pngNumber + ".png";
+                        + listOfAnimationStates.get(eachAnimationState) + "_" + uniqueID + ".png";
                 
                 // LOAD THE IMAGE
                 Image img = loadImageInBatch(pathOfMan, fileName, tracker, idCounter);

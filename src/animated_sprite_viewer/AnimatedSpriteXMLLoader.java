@@ -221,7 +221,7 @@ public class AnimatedSpriteXMLLoader
      * @throws InvalidXMLFileFormatException Thrown if we encounter an xml
      * file that does not validate against its schema.
      */
-    public static void loadNumberOfImagesForEachState(String pathToSprite,
+    public static void loadNumberOfFiles(String pathToSprite,
                                            String xmlOfSpriteType,
                                            ArrayList<Integer> numberOfImagesForEachState)
                                            throws InvalidXMLFileFormatException
@@ -263,23 +263,7 @@ public class AnimatedSpriteXMLLoader
             numberOfImages = listOfImages.size();
         }
         System.out.println("gg");
-        
-        
-        listOfFileNames.add("triangle_man_JUMPING_3433.png");
-        for(int eachFileName=0;eachFileName<listOfFileNames.size();eachFileName++){
-            String[] beek = listOfFileNames.get(eachFileName).split("_");
-            int qqClara = beek[beek.length-1].length();
-            int blah = listOfFileNames.get(eachFileName).length();
-            int blam = blah-qqClara;
-            listOfModifiedFileNames.add(listOfFileNames.get(eachFileName).substring(0,blam));
-        }
-        
-        //Go through each string and see if it equals any other strings.
-        //Add the index's of the other strings that it equals if any.
-        //Test if the current index is blacklisted .
-        //Else see if it equals any other strings add the index's of the other strings that it equals to the blacklist and add one.
-        
-        System.out.println("fff");
+        ///if listOfImages.get(eachImage).getAttributeValue("id") equals the id i want
     }
     
     /**
