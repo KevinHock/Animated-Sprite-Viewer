@@ -209,6 +209,50 @@ public class AnimatedSpriteXMLLoader
             }
         }
     }
+    /**
+     * This method extracts the animation states and attributes of all sprite types from the provided
+     * xml file argument and loads these names into the animationStates and animationAttributes
+     * lists.
+     * 
+     * @param pathToSprite Path to where the sprite is.
+     * 
+     * @param xmlOfSpriteType File name for the xml file of the sprite.
+     * 
+     * @param 
+     * 
+     * @throws InvalidXMLFileFormatException Thrown if we encounter an xml
+     * file that does not validate against its schema.
+     */
+    public static void loadNumberOfImagesForEachState(String pathToSprite,
+                                           String xmlOfSpriteType,
+                                           ArrayList<Integer> numberOfImagesForEachState)
+                                           throws InvalidXMLFileFormatException
+    {
+        // FIRST LET'S BUILD THE NAME OF THE XML FILE
+        String xmlFile = (pathToSprite + xmlOfSpriteType).trim();
+        
+        // NOW LET'S BUILD THE NAME OF THE SCHEMA
+        String xsdFile = "./data/sprite_types/sprite_type.xsd";
+        
+        // IS THE XML VALID PER THE SCHEMA?
+        WhitespaceFreeXMLDoc cleanDoc = loadXMLDocument(xmlFile, xsdFile);
+
+        // IF THERE'S A PROBLEM LOADING THE XML FILE THEN
+        // SKIP THIS SPRITE TYPE
+        if (cleanDoc == null)
+        {
+            throw new InvalidXMLFileFormatException(xmlFile, xsdFile);
+        }
+
+        // IT'S A VALID XML FILE SO LET'S GET THE DATA
+        //Gets the root of sprite_type_list.xml which is <sprite_type>.
+        WhitespaceFreeXMLNode root = cleanDoc.getRoot();
+        
+        //Puts all the animations_list's in an ArrayList.
+        ArrayList<WhitespaceFreeXMLNode> listOfImages_List = root.getChildrenOfType("images_list");
+        
+        
+    }
     
     /**
      * This method reads in the xmlFile, validates it against the
