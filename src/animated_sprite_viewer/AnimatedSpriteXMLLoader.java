@@ -32,9 +32,7 @@ import org.xml.sax.SAXException;
  * its own directory. They can be validated by:
  * ./data/sprite_types/sprite_type.xsd
  * 
- * @author  Richard McKenna &
- *          Debugging Enterprises
- * @version 1.0
+ * @author  Kevin Hock
  */
 public class AnimatedSpriteXMLLoader 
 {
@@ -218,7 +216,7 @@ public class AnimatedSpriteXMLLoader
      * 
      * @param xmlOfSpriteType File name for the xml file of the sprite.
      * 
-     * @param 
+     * @param numberOfImagesForEachState Holds the number of images for each state.
      * 
      * @throws InvalidXMLFileFormatException Thrown if we encounter an xml
      * file that does not validate against its schema.
@@ -252,14 +250,36 @@ public class AnimatedSpriteXMLLoader
         ArrayList<WhitespaceFreeXMLNode> listOfImages_List = root.getChildrenOfType("images_list");
         
         ArrayList<WhitespaceFreeXMLNode> listOfImages;
-        int numberOfImages;
-        //Go through each Images list.
+        
+        ArrayList<String> listOfFileNames = new ArrayList<String>();
+        ArrayList<String> listOfModifiedFileNames = new ArrayList<String>();
+        
+        int numberOfImages=0;
+        //Go through each Images list and get each name of every image file.
         for(int eachImages_List=0;eachImages_List<listOfImages_List.size();eachImages_List++){
             listOfImages = listOfImages_List.get(eachImages_List).getChildrenOfType("image_file");
+            for(int eachImage=0;eachImage<listOfImages.size();eachImage++)
+                listOfFileNames.add(listOfImages.get(eachImage).getAttributeValue("file_name"));
             numberOfImages = listOfImages.size();
-            
+        }
+        System.out.println("gg");
+        
+        
+        listOfFileNames.add("triangle_man_JUMPING_3433.png");
+        for(int eachFileName=0;eachFileName<listOfFileNames.size();eachFileName++){
+            String[] beek = listOfFileNames.get(eachFileName).split("_");
+            int qqClara = beek[beek.length-1].length();
+            int blah = listOfFileNames.get(eachFileName).length();
+            int blam = blah-qqClara;
+            listOfModifiedFileNames.add(listOfFileNames.get(eachFileName).substring(0,blam));
         }
         
+        //Go through each string and see if it equals any other strings.
+        //Add the index's of the other strings that it equals if any.
+        //Test if the current index is blacklisted .
+        //Else see if it equals any other strings add the index's of the other strings that it equals to the blacklist and add one.
+        
+        System.out.println("fff");
     }
     
     /**

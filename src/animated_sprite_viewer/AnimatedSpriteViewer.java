@@ -43,25 +43,7 @@ import sprite_renderer.SpriteType;
 public class AnimatedSpriteViewer extends JFrame
 {
     /***
-     * Go over the global variables and describe their use
-     * Put the two listeners in their own classes.
      * Should I sceneRenderingPanel.unpauseScene(); after it's clicked?
-     * Go over the comments in the handler classes.
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
      */
     
     // FOR THE TITLE BAR
@@ -76,17 +58,13 @@ public class AnimatedSpriteViewer extends JFrame
     public static final String SELECT_SPRITE_TYPE_TEXT = "Select Sprite Type";
     public static final String SELECT_ANIMATION_TEXT = "Select Animation State";
  
-    // WE'LL ONLY ACTUALLY HAVE ONE SPRITE AT A TIME IN HERE,
-    // THE ONE THAT WE ARE CURRENTLY VIEWING
+    // ArrayList for all of the sprites
     private ArrayList<Sprite> spriteList;
     
-    // WE'LL LOAD ALL THE SPRITE TYPES INTO LIST
-    // FROM AN XML FILE
+    // ArrayList for type names
     private ArrayList<String> spriteTypeNames;
     
-    //WE'LL LOAD ALL THE SPRITE TYPES INTO LIST
-    //FROM AN XML FILE
-    //Unsure
+    //Array list for Animation State
     public ArrayList<String> spriteAnimationStates;
     
     // THIS WILL DO OUR XML FILE LOADING FOR US
@@ -114,6 +92,7 @@ public class AnimatedSpriteViewer extends JFrame
     private JPanel animationToolbar;
     private JButton startButton,stopButton,slowDownButton,speedUpButton;
     
+    //Self-explanatory strings
     public String directoryOfSprite,spriteType;
     private String xmlOfSpriteType;
     private ArrayList<String[][]> spriteAnimationAttributes;
@@ -271,7 +250,6 @@ public class AnimatedSpriteViewer extends JFrame
         try{
             // THIS WILL LOAD AND VALIDATE
             // OUR XML FILES
-            //unsure Unsure
             xmlLoader = new AnimatedSpriteXMLLoader(this);
             // FIRST UP ARE THE ANIMATIONS STATES AND ATTRIBUTES
             xmlLoader.loadSpriteAnimationStatesAndAttributes(directoryOfSprite, xmlOfSpriteType, spriteAnimationStates, spriteAnimationAttributes);        
@@ -362,7 +340,6 @@ public class AnimatedSpriteViewer extends JFrame
         try{
             // THIS WILL LOAD AND VALIDATE
             // OUR XML FILES
-            //unsure Unsure
             xmlLoader = new AnimatedSpriteXMLLoader(this);
             //NEXT UP ARE THE NUMBERS OF IMAGES FOR EVERY STATE
             xmlLoader.loadNumberOfImagesForEachState(directoryOfSprite, xmlOfSpriteType, numberOfImagesForEachState);        
@@ -386,13 +363,16 @@ public class AnimatedSpriteViewer extends JFrame
      */
     public void loadSprite(String state,String type_man, String pathOfMan)
     {
-        
+        //Get's the number of images for each state.
+        getNumberOfImagesForEachState();
+        //Loads the spirte type
         SpriteType duhSprite = loadSpriteType(type_man,pathOfMan);
         
-        AnimationState cool = AnimationState.valueOf(state);
+        //Turns the string state into the AnimationState state
+        AnimationState aniState = AnimationState.valueOf(state);
         
         // NOW LET'S INIT OUR PLAYER SPRITE
-        Sprite player = new Sprite(duhSprite, cool);
+        Sprite player = new Sprite(duhSprite, aniState);
         player.setPositionX(250);
         player.setPositionY(250);
         player.setVelocityX(0);

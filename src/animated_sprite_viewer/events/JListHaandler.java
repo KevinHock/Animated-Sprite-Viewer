@@ -30,8 +30,9 @@ public class JListHaandler implements MouseListener{
     @Override
     public void mouseClicked(MouseEvent me) {
         if (me.getClickCount() == 1) {
+            //Sees where the user clicked and gives that index to the fillComboBox method/
                     int index = asv.spriteTypesList.locationToIndex(me.getPoint());
-                    asv.clearAnimationStatesComboBox(true, index);
+                    asv.fillComboBox(index);
         }
     }
 
