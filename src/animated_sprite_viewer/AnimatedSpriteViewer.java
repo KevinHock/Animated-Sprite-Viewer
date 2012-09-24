@@ -1,5 +1,6 @@
 package animated_sprite_viewer;
 
+import animated_sprite_viewer.events.MeyeActionListener;
 import animated_sprite_viewer.events.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -86,7 +87,7 @@ public class AnimatedSpriteViewer extends JFrame
     //WE'LL LOAD ALL THE SPRITE TYPES INTO LIST
     //FROM AN XML FILE
     //Unsure
-    private ArrayList<String> spriteAnimationStates;
+    public ArrayList<String> spriteAnimationStates;
     
     // THIS WILL DO OUR XML FILE LOADING FOR US
     private AnimatedSpriteXMLLoader xmlLoader;
@@ -113,8 +114,8 @@ public class AnimatedSpriteViewer extends JFrame
     private JPanel animationToolbar;
     private JButton startButton,stopButton,slowDownButton,speedUpButton;
     
-    private String directoryOfSprite,spriteType;
-    
+    public String directoryOfSprite,spriteType;
+    private String xmlOfSpriteType;
     private ArrayList<String[][]> spriteAnimationAttributes;
     
     /**
@@ -200,9 +201,10 @@ public class AnimatedSpriteViewer extends JFrame
         spriteStateComboBoxModel = new DefaultComboBoxModel();        
         spriteStateCombobox = new JComboBox();
         spriteStateCombobox.setModel(spriteStateComboBoxModel);
-        //Adds the SELECT_ANIMATION_TEXT element and temporarily disables the ComboBox until the list of sprites is clicked on.
-        clearAnimationStatesComboBox(false,0);
-        
+        //Adds the SELECT_ANIMATION_TEXT element
+        spriteStateComboBoxModel.addElement(SELECT_ANIMATION_TEXT);
+        //Temporarily disables the ComboBox until the list of sprites is clicked on.
+        spriteStateCombobox.setEnabled(false);
         
         // NOW LET'S ARRANGE ALL OUR CONTROLS IN THE WEST
         westOfSouthPanel = new JPanel();
@@ -248,64 +250,47 @@ public class AnimatedSpriteViewer extends JFrame
     }
     
     /**
-     * This helper method empties the combo box with animations
-     * and disables the component.
+     * This helper method fills the combo box with the poses of the sprite clicked on and gets the attributes for later.
      * 
-     * @param fromMouse Whether or not it was called from mouseListener
      * @param indexOfName Contains the index of the name of the sprite to load the poses of into the combo box.
      */
-    public void clearAnimationStatesComboBox(boolean fromMouse, int indexOfName)
+    public void fillComboBox(int indexOfName)
     {
         spriteStateComboBoxModel.removeAllElements();
         spriteStateComboBoxModel.addElement(SELECT_ANIMATION_TEXT);
-        //For when the user clicks on the JList
-        if(fromMouse){
-            //INITIALIZE THE ARRAYLIST THAT loadSpriteAnimationStatesAndAttributes needs
-            spriteAnimationStates = new ArrayList<String>();
-            spriteAnimationAttributes = new ArrayList<String[][]>();
-            //USE THESE STRINGS FOR PARAMETERS IN loadSpriteAnimationStatesAndAttributes
-            spriteType = spriteTypeNames.get(indexOfName);
-            directoryOfSprite = SPRITES_DATA_PATH;
-            directoryOfSprite += spriteType;
-            directoryOfSprite += "/";
-            String xmlOfSpriteType = spriteType; 
-            xmlOfSpriteType += ".xml";
-            try{
-                // THIS WILL LOAD AND VALIDATE
-                // OUR XML FILES
-                xmlLoader = new AnimatedSpriteXMLLoader(this);
-                // FIRST UP ARE THE ANIMATIONS STATES AND ATTRIBUTES
-                xmlLoader.loadSpriteAnimationStatesAndAttributes(directoryOfSprite, xmlOfSpriteType, spriteAnimationStates, spriteAnimationAttributes);        
-            }
-            catch(InvalidXMLFileFormatException ixffe){
-                // IF WE DON'T HAVE A VALID SPRITE TYPE 
-                // LIST WE HAVE NOTHING TO DO, WE'LL POP
-                // OPEN A DIALOG BOX SO THE USER KNOWS
-                // WHAT HAPPENED
-                JOptionPane.showMessageDialog(this, ixffe.toString());
-                System.exit(0);
-            }
-            //PUT ALL OF THE ANIMATION STATES INTO THE COMBO BOX
-            for(int eachAnimationState=0;eachAnimationState<spriteAnimationStates.size();eachAnimationState++)
-                spriteStateComboBoxModel.addElement(spriteAnimationStates.get(eachAnimationState));
-            class MyActionListener implements ActionListener {
-                public void actionPerformed(ActionEvent evt) {
-                JComboBox cb = (JComboBox)evt.getSource();
-                Object item = cb.getSelectedItem();
-                if(item!=null)
-                    for(int eachAnimationState=0;eachAnimationState<spriteAnimationStates.size();eachAnimationState++)
-                        if(item.equals(spriteAnimationStates.get(eachAnimationState)))
-                            loadSprite((String)item,spriteType,directoryOfSprite);
-                }
-            }
-            ///reeeeeeel sloppy Listeners
-            MyActionListener actionListener = new MyActionListener();
-            spriteStateCombobox.addActionListener(actionListener);
-            spriteStateCombobox.setEnabled(true);
+        //INITIALIZE THE ARRAYLIST THAT loadSpriteAnimationStatesAndAttributes needs
+        spriteAnimationStates = new ArrayList<String>();
+        spriteAnimationAttributes = new ArrayList<String[][]>();
+        //USE THESE STRINGS FOR PARAMETERS IN loadSpriteAnimationStatesAndAttributes
+        spriteType = spriteTypeNames.get(indexOfName);
+        directoryOfSprite = SPRITES_DATA_PATH;
+        directoryOfSprite += spriteType;
+        directoryOfSprite += "/";
+        xmlOfSpriteType = spriteType; 
+        xmlOfSpriteType += ".xml";
+        try{
+            // THIS WILL LOAD AND VALIDATE
+            // OUR XML FILES
+            //unsure Unsure
+            xmlLoader = new AnimatedSpriteXMLLoader(this);
+            // FIRST UP ARE THE ANIMATIONS STATES AND ATTRIBUTES
+            xmlLoader.loadSpriteAnimationStatesAndAttributes(directoryOfSprite, xmlOfSpriteType, spriteAnimationStates, spriteAnimationAttributes);        
         }
-        //For when the ComboBox is first made.
-        else
-            spriteStateCombobox.setEnabled(false);
+        catch(InvalidXMLFileFormatException ixffe){
+            // IF WE DON'T HAVE A VALID SPRITE TYPE 
+            // LIST WE HAVE NOTHING TO DO, WE'LL POP
+            // OPEN A DIALOG BOX SO THE USER KNOWS
+            // WHAT HAPPENED
+            JOptionPane.showMessageDialog(this, ixffe.toString());
+            System.exit(0);
+        }
+        //PUT ALL OF THE ANIMATION STATES INTO THE COMBO BOX
+        for(int eachAnimationState=0;eachAnimationState<spriteAnimationStates.size();eachAnimationState++)
+            spriteStateComboBoxModel.addElement(spriteAnimationStates.get(eachAnimationState));
+        //Put a listener on the combo box
+        MeyeActionListener actionListener = new MeyeActionListener(this);
+        spriteStateCombobox.addActionListener(actionListener);
+        spriteStateCombobox.setEnabled(true);
     }
     
     /**
@@ -349,6 +334,10 @@ public class AnimatedSpriteViewer extends JFrame
      */
     private void initHandlers()
     {
+        /* Note the handler for the combo box has to be added after the JListHandler
+         * is clicked on so it is within the method fillComboBox().
+         */
+        
         // CONSTRUCT AND REGISTER ALL THE HANDLERS FOR THE JLIST
         JListHaandler jListListener = new JListHaandler(this);
         spriteTypesList.addMouseListener(jListListener);
@@ -363,12 +352,41 @@ public class AnimatedSpriteViewer extends JFrame
         speedUpButton.addActionListener(speedah);
     }
     /**
+     * This helper method fills the combo box with the poses of the sprite clicked on and gets the attributes for later.
+     * 
+     * @param indexOfName Contains the index of the name of the sprite to load the poses of into the combo box.
+     */
+    public void getNumberOfImagesForEachState()
+    {
+        ArrayList<Integer> numberOfImagesForEachState = new ArrayList<Integer>();
+        try{
+            // THIS WILL LOAD AND VALIDATE
+            // OUR XML FILES
+            //unsure Unsure
+            xmlLoader = new AnimatedSpriteXMLLoader(this);
+            //NEXT UP ARE THE NUMBERS OF IMAGES FOR EVERY STATE
+            xmlLoader.loadNumberOfImagesForEachState(directoryOfSprite, xmlOfSpriteType, numberOfImagesForEachState);        
+        }
+        catch(InvalidXMLFileFormatException ixffe){
+            // IF WE DON'T HAVE A VALID SPRITE TYPE 
+            // LIST WE HAVE NOTHING TO DO, WE'LL POP
+            // OPEN A DIALOG BOX SO THE USER KNOWS
+            // WHAT HAPPENED
+            JOptionPane.showMessageDialog(this, ixffe.toString());
+            System.exit(0);
+        }
+    }
+    
+    
+    
+    /**
      * This helper method loads our player, including its art and poses
      * and then initializing the player sprite and then adding it to
      * the scene.
      */
-    private void loadSprite(String state,String type_man, String pathOfMan)
+    public void loadSprite(String state,String type_man, String pathOfMan)
     {
+        
         SpriteType duhSprite = loadSpriteType(type_man,pathOfMan);
         
         AnimationState cool = AnimationState.valueOf(state);
