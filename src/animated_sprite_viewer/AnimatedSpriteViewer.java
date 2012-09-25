@@ -6,7 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.List;
+//import java.awt.List;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
+//import java.util.Collections;
 import java.util.Iterator;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -336,7 +337,7 @@ public class AnimatedSpriteViewer extends JFrame
      * 
      * @param indexOfName Contains the index of the name of the sprite to load the poses of into the combo box.
      */
-    public ArrayList<String> getNumberOfFiles(ArrayList<Integer> numberOfImagesForEachState)
+    public ArrayList<String> getFileNames(ArrayList<Integer> numberOfImagesForEachState)
     {
         ArrayList<String> names = new ArrayList<String>();
         try{
@@ -344,7 +345,7 @@ public class AnimatedSpriteViewer extends JFrame
             // OUR XML FILES
             xmlLoader = new AnimatedSpriteXMLLoader(this);
             //NEXT UP ARE THE NUMBERS OF IMAGES FOR EVERY STATE
-            xmlLoader.loadNumberOfFiles(directoryOfSprite, xmlOfSpriteType, numberOfImagesForEachState);        
+            xmlLoader.loadFileNames(directoryOfSprite, xmlOfSpriteType, numberOfImagesForEachState,names);        
         }
         catch(InvalidXMLFileFormatException ixffe){
             // IF WE DON'T HAVE A VALID SPRITE TYPE 
@@ -388,7 +389,6 @@ public class AnimatedSpriteViewer extends JFrame
    private SpriteType loadSpriteType(String type_man, String pathOfMan)
    {
         // WE'LL USE THESE TO INITIALIZE OUR SPRITE TYPE
-        int idCounter = 1;
         ArrayList<AnimationState> listOfAnimationStates = new ArrayList<AnimationState>();
         
         //Adds all of those animation states in Animation State form (not String form like spriteAnimationStates)
@@ -422,29 +422,21 @@ public class AnimatedSpriteViewer extends JFrame
                 if(!uniqueIDList.contains(imageIDsArrayList.get(eachImageID)))
                     uniqueIDList.add(imageIDsArrayList.get(eachImageID));
             
-            //uniqueIDList.sort();
-            
-            //for (List<Integer> k : uniqueIDList) {
-                Collections.sort(uniqueIDList);
-            //}
-            System.out.println("bing");
+            //Make sure the file names are in sync with the imageIDs
+            Collections.sort(uniqueIDList);
             //Get's the number of images for each state.
-            ArrayList<String> names = getNumberOfFiles(uniqueIDList);
+            ArrayList<String> names = getFileNames(uniqueIDList);
             
             // AND NOW LOAD THE IMAGES
-            for (int uniqueID=1; uniqueID<= 5; uniqueID++)
+            for (int i=0; i<names.size(); i++)
             {
-                //String pngNumber = uniqueIDList.get(uniqueID).toString();
-                // THE IMAGE NAMES ARE PREDICABLE
-                String fileName = type_man + "_"
-                        + listOfAnimationStates.get(eachAnimationState) + "_" + uniqueID + ".png";
-                
+                //Get file name
+                String fileName = names.get(i);
                 // LOAD THE IMAGE
-                Image img = loadImageInBatch(pathOfMan, fileName, tracker, idCounter);
+                Image img = loadImageInBatch(pathOfMan, fileName, tracker, uniqueIDList.get(i));
                 
                 // GIVE IT TO THE SPRITE TYPE
-                man.addImage(idCounter, img);
-                idCounter++;
+                man.addImage(uniqueIDList.get(i), img);
             }
         }
         

@@ -216,14 +216,17 @@ public class AnimatedSpriteXMLLoader
      * 
      * @param xmlOfSpriteType File name for the xml file of the sprite.
      * 
-     * @param numberOfImagesForEachState Holds the number of images for each state.
+     * @param uniqueIDList List of IDs were looking for.
+     * 
+     * @param names Holds the file names of the .png's we are looking for.
      * 
      * @throws InvalidXMLFileFormatException Thrown if we encounter an xml
      * file that does not validate against its schema.
      */
-    public static void loadNumberOfFiles(String pathToSprite,
+    public static void loadFileNames(String pathToSprite,
                                            String xmlOfSpriteType,
-                                           ArrayList<Integer> numberOfImagesForEachState)
+                                           ArrayList<Integer> uniqueIDList,
+                                           ArrayList<String> names)
                                            throws InvalidXMLFileFormatException
     {
         // FIRST LET'S BUILD THE NAME OF THE XML FILE
@@ -249,21 +252,16 @@ public class AnimatedSpriteXMLLoader
         //Puts all the animations_list's in an ArrayList.
         ArrayList<WhitespaceFreeXMLNode> listOfImages_List = root.getChildrenOfType("images_list");
         
+        //The list for all the image_file nodes
         ArrayList<WhitespaceFreeXMLNode> listOfImages;
         
-        ArrayList<String> listOfFileNames = new ArrayList<String>();
-        ArrayList<String> listOfModifiedFileNames = new ArrayList<String>();
-        
-        int numberOfImages=0;
-        //Go through each Images list and get each name of every image file.
+        //Go through each Image and get the file_names of the images that have the same id as the ones we are looking for.
         for(int eachImages_List=0;eachImages_List<listOfImages_List.size();eachImages_List++){
             listOfImages = listOfImages_List.get(eachImages_List).getChildrenOfType("image_file");
             for(int eachImage=0;eachImage<listOfImages.size();eachImage++)
-                listOfFileNames.add(listOfImages.get(eachImage).getAttributeValue("file_name"));
-            numberOfImages = listOfImages.size();
+                if(uniqueIDList.contains(Integer.parseInt(listOfImages.get(eachImage).getAttributeValue("id"))))
+                    names.add(listOfImages.get(eachImage).getAttributeValue("file_name"));
         }
-        System.out.println("gg");
-        ///if listOfImages.get(eachImage).getAttributeValue("id") equals the id i want
     }
     
     /**
