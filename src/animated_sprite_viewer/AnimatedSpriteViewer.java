@@ -1,22 +1,14 @@
 package animated_sprite_viewer;
 
-import animated_sprite_viewer.events.MeyeActionListener;
 import animated_sprite_viewer.events.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Insets;
-//import java.awt.List;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
-//import java.util.Collections;
 import java.util.Iterator;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -45,10 +37,6 @@ import sprite_renderer.SpriteType;
  */
 public class AnimatedSpriteViewer extends JFrame
 {
-    /***
-     * Should I sceneRenderingPanel.unpauseScene(); after it's clicked?
-     */
-    
     // FOR THE TITLE BAR
     public static final String APP_TITLE = "Animated Sprite Viewer by Kevin Hock";
     
@@ -222,8 +210,6 @@ public class AnimatedSpriteViewer extends JFrame
         sceneRenderingPanel = new SceneRenderer(spriteList);
         sceneRenderingPanel.setBackground(Color.white);
         sceneRenderingPanel.startScene();
-        
-        //Unsure of whether or not to render right after the user clicks on the combo box for the first time.
         sceneRenderingPanel.unpauseScene();
         
         // AND LET'S ARRANGE EVERYTHING IN THE FRAME
@@ -357,9 +343,6 @@ public class AnimatedSpriteViewer extends JFrame
         }
         return names;
     }
-    
-    
-    
     /**
      * This helper method loads our player, including its art and poses
      * and then initializing the player sprite and then adding it to

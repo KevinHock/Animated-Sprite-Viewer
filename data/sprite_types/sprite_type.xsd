@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+ <xs:element name="sprite_type">
+  <xs:complexType>
+   <xs:sequence>
+    <xs:element name="width" type="xs:positiveInteger"/>
+    <xs:element name="height" type="xs:positiveInteger"/>
+    <xs:element name="images_list">
+     <xs:complexType>
+      <xs:sequence>
+       <xs:element name="image_file" minOccurs="0" maxOccurs="100">
+        <xs:complexType>
+         <xs:attribute name="id" type="xs:positiveInteger"/>
+         <xs:attribute name="file_name" type="xs:string" />
+        </xs:complexType>
+       </xs:element>
+      </xs:sequence>
+     </xs:complexType>
+    </xs:element>
+    <xs:element name="animations_list" minOccurs="1" maxOccurs="100">
+     <xs:complexType>
+      <xs:sequence>
+       <xs:element name="animation_state" minOccurs="1" maxOccurs="100">
+        <xs:complexType>
+         <xs:sequence>
+          <xs:element name="state" type="xs:string"/>
+          <xs:element name="animation_sequence" minOccurs="1" maxOccurs="100">
+           <xs:complexType>
+            <xs:sequence>
+             <xs:element name="pose" minOccurs="1" maxOccurs="100">
+              <xs:complexType>
+               <xs:attribute name="image_id" type="xs:positiveInteger"/>
+               <xs:attribute name="duration" type="xs:positiveInteger"/>
+              </xs:complexType>
+             </xs:element>
+            </xs:sequence>
+           </xs:complexType>
+          </xs:element>
+         </xs:sequence>
+        </xs:complexType>
+       </xs:element>
+      </xs:sequence> 
+     </xs:complexType>
+    </xs:element>
+   </xs:sequence>
+  </xs:complexType>
+ </xs:element>
+</xs:schema>
