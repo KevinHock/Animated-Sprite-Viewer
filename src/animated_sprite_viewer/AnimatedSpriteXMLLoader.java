@@ -66,7 +66,7 @@ public class AnimatedSpriteXMLLoader
     {
         view = initView;
     }
-
+    
     /**
      * This method extracts the names of all sprite types from the provided
      * xml file argument and loads these names into the spriteTypeNames
@@ -91,9 +91,12 @@ public class AnimatedSpriteXMLLoader
     {
         // FIRST LET'S BUILD THE NAME OF THE XML FILE
         String xmlFile = (path + spriteTypesXMLFile).trim();
+        //"./data/sprite_types/sprite_type_list.xml"
+        
         
         // NOW LET'S BUILD THE NAME OF THE SCHEMA
         String xsdFile = xmlFile.substring(0, xmlFile.length()-4) + ".xsd";
+        //"./data/sprite_types/sprite_type_list.xsd"
         
         // IS THE XML VALID PER THE SCHEMA?
         WhitespaceFreeXMLDoc cleanDoc = loadXMLDocument(xmlFile, xsdFile);
