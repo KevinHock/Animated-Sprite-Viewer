@@ -60,10 +60,10 @@ public class AnimatedSpriteViewer extends JFrame
     
     // THIS WILL DO OUR XML FILE LOADING FOR US
     private AnimatedSpriteXMLLoader xmlLoader;
-
+    
     // THE WEST WILL PROVIDE SPRITE TYPE AND ANIM STATE SELECTION CONTROLS
     private JPanel westOfSouthPanel;
-
+    
     // THIS WILL STORE A SELECTABLE LIST OF THE LOADED SPRITES
     private JScrollPane spriteTypesListJSP;
     public JList spriteTypesList;//try later with private
@@ -72,13 +72,13 @@ public class AnimatedSpriteViewer extends JFrame
     // THIS WELL LET THE USER CHOOSE DIFFERENT ANIMATION STATES TO VIEW
     private JComboBox spriteStateCombobox;
     private DefaultComboBoxModel spriteStateComboBoxModel;
-
+    
     // THIS PANEL WILL ORGANIZE THE CENTER
     private JPanel southPanel;
     
     // THIS PANEL WILL RENDER OUR SPRITE
     private SceneRenderer sceneRenderingPanel;
-
+    
     // THIS TOOLBAR WILL ALLOW THE USER TO CONTROL ANIMATION
     private JPanel animationToolbar;
     private JButton startButton,stopButton,slowDownButton,speedUpButton;
@@ -205,6 +205,11 @@ public class AnimatedSpriteViewer extends JFrame
         southPanel = new JPanel();
         southPanel.add(westOfSouthPanel);
         southPanel.add(animationToolbar);
+        
+        
+        //make north and south
+        //add to west and east
+        
         
         // AND OF COURSE OUR RENDERING PANEL
         sceneRenderingPanel = new SceneRenderer(spriteList);
