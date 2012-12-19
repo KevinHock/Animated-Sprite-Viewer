@@ -39,6 +39,7 @@ public class AnimatedSpriteXMLLoader
     // THE VIEW IS USED TO HELP WITH IMAGE LOADING
     private AnimatedSpriteViewer view;
     
+    
     // DON'T BURY IMPORTANT STRING CONSTANTS INSIDE METHODS
     public static final String SCHEMA_STANDARD_SPEC_URL = "http://www.w3.org/2001/XMLSchema";
     public static final String SPRITE_TYPE_LIST_NODE_NAME = "sprite_type_list";
@@ -93,7 +94,7 @@ public class AnimatedSpriteXMLLoader
         String xmlFile = (path + spriteTypesXMLFile).trim();
         //"./data/sprite_types/sprite_type_list.xml"
         
-        
+        //
         // NOW LET'S BUILD THE NAME OF THE SCHEMA
         String xsdFile = xmlFile.substring(0, xmlFile.length()-4) + ".xsd";
         //"./data/sprite_types/sprite_type_list.xsd"
@@ -209,6 +210,8 @@ public class AnimatedSpriteXMLLoader
                 }
             }
         }
+        
+        
     }
     /**
      * This method extracts the animation states and attributes of all sprite types from the provided

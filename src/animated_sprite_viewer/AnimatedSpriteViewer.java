@@ -356,7 +356,7 @@ public class AnimatedSpriteViewer extends JFrame
     public void loadSprite(String state,String type_man, String pathOfMan)
     {
         //Loads the spirte type
-        SpriteType duhSprite = loadSpriteType(type_man,pathOfMan);
+        SpriteType duhSprite = loadSpriteType(pathOfMan);//type_man,
         
         //Turns the string state into the AnimationState state
         AnimationState aniState = AnimationState.valueOf(state);
@@ -374,10 +374,13 @@ public class AnimatedSpriteViewer extends JFrame
         spriteList.add(player);
     }
     
-   private SpriteType loadSpriteType(String type_man, String pathOfMan)
+   private SpriteType loadSpriteType(String pathOfMan)//String type_man, 
    {
         // WE'LL USE THESE TO INITIALIZE OUR SPRITE TYPE
         ArrayList<AnimationState> listOfAnimationStates = new ArrayList<AnimationState>();
+        
+        
+        
         
         //Adds all of those animation states in Animation State form (not String form like spriteAnimationStates)
         for(int index=0;index<spriteAnimationStates.size();index++)
@@ -388,6 +391,9 @@ public class AnimatedSpriteViewer extends JFrame
         
         // AND HERE'S THE ACTUAL SPRITE TYPE
         SpriteType man = new SpriteType();
+        
+        
+        
         
         //Add all of the images
         for (int eachAnimationState = 0; eachAnimationState < listOfAnimationStates.size(); eachAnimationState++){
@@ -470,8 +476,11 @@ public class AnimatedSpriteViewer extends JFrame
                                     MediaTracker tracker,
                                     int id)
     {
-        Toolkit tk = Toolkit.getDefaultToolkit();
+        Toolkit tk = Toolkit.getDefaultToolkit();//CToolKit
         String fullFileNameWithPath = path + fileName;
+        System.out.println("hi");
+
+        Image ibsfmwl = tk.getImage(fullFileNameWithPath);
         Image img = tk.getImage(fullFileNameWithPath);
         tracker.addImage(img, id);
         return img;

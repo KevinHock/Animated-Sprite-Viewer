@@ -16,9 +16,9 @@ public class MeyeActionListener implements ActionListener {
         Object item = cb.getSelectedItem();
         //If the event clicked on isn't null go through every animation state and see which one the user clicked on.
         //Then load the sprite with that animation state.
-        if(item!=null)
-            for(int eachAnimationState=0;eachAnimationState<asv.spriteAnimationStates.size();eachAnimationState++)
-                if(item.equals(asv.spriteAnimationStates.get(eachAnimationState)))
+        if(item!=null && !item.equals("Select Animation State"))
+            //for(int eachAnimationState=0;eachAnimationState<asv.spriteAnimationStates.size();eachAnimationState++)
+                //if(item.equals(asv.spriteAnimationStates.get(eachAnimationState)))
                     asv.loadSprite((String)item,asv.spriteType,asv.directoryOfSprite);
     }
 }
