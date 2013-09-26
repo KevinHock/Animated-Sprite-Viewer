@@ -1,3 +1,1 @@
-HelloASV
-========
-Just a HW from 219.
+Animated Sprite Viewer in Java
